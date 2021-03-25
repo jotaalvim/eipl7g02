@@ -8,6 +8,7 @@ void parse(char *line) {
     char *delims = " \t\n";
 
     for(char *token = strtok(line, delims); token != NULL; token = strtok(NULL, delims)) {
+
         char *sobra;
         long val_i = strtol(token, &sobra, 10);
         if(strlen(sobra) == 0) {
@@ -42,32 +43,34 @@ void parse(char *line) {
         }
         else if(strcmp(token,"%") == 0) {
             int Y = pop();
-            push(abs(Y));
+            int X = pop();
+            push(X % Y);
         }
         else if(strcmp(token,"#") == 0) {
             int Y = pop();
             int X = pop();
-            push(pow(Y,X));
+            push( pow(Y,X));
         }
         else if(strcmp(toke n,"&") == 0) {
             int Y = pop();
             int X = pop();
-            push(X&&Y);
+            push( X & Y);
         }
         else if(strcmp(toke n,"|") == 0) {
             int Y = pop();
             int X = pop();
-            push(X||Y);
+            push(X | Y);
         }
         else if(strcmp(toke n,"^") == 0) {
             int Y = pop();
             int X = pop();
-            push( (X&&!Y) || (!X&&Y));
+            push( X ^ Y);
+            //push( (X & ~Y) | (~X & Y));
         }
         else if(strcmp(toke n,"~") == 0) {
             int Y = pop();
-            push(!Y);
+            push( ~Y );
         }
-        // 
+        
     }
 }
