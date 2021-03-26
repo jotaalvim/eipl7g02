@@ -24,78 +24,81 @@ int count = -1;
  *
  */
 void parse(char *line) {
+    int Y = *stack;
+    int X = *stack;
 
     char *delims = " \t\n";
-
     for(char *token = strtok(line, delims); token != NULL; token = strtok(NULL, delims)) {
 
         char *sobra;
         long val_i = strtol(token, &sobra, 10);
         if(strlen(sobra) == 0) {
             push(val_i);
-        } else if(strcmp(token, "+") == 0) {
-            int Y = pop();
-            int X = pop();
-            push(X + Y);
         }
-          else if(strcmp(token, "-") == 0) {
-            int Y = pop();
-            int X = pop();
-            push(X - Y); 
-        }
-          else if(strcmp(token, "*") == 0) {
-            int Y = pop();
-            int X = pop();
-            push(X * Y);
-        }
-          else if(strcmp(token, "/") == 0) {
-            int Y = pop();
-            int X = pop();
-            push(X / Y);    
-        }
-        else if(strcmp(token,"(") == 0) {
-            int Y = pop();
-            push(Y-1);
-        }
-        else if(strcmp(token,")") == 0) {
-            int Y = pop();
-            push(Y+1);
-        }
-        else if(strcmp(token,"%") == 0) {
-            int Y = pop();
-            int X = pop();
-            push(X % Y);
-        }
-        else if(strcmp(token,"#") == 0) {
-            int Y = pop();
-            int X = pop();
-            int a,b=1;
-            for (a=0;a<Y;a++){
-                b=b*X;
-            };
-            push(b);
-        }
-        else if(strcmp(token,"&") == 0) {
-            int Y = pop();
-            int X = pop();
-            push( X & Y);
-        }
-        else if(strcmp(token,"|") == 0) {
-            int Y = pop();
-            int X = pop();
-            push(X | Y);
-        }
-        else if(strcmp(token,"^") == 0) {
-            int Y = pop();
-            int X = pop();
-            push( X ^ Y);
+        switch (token[0]) {
+            case '+':
+                Y = pop();
+                X = pop();
+                 push(X + Y);
+                break;
+            case '-':
+                Y = pop();
+                X = pop();
+                push(X - Y); 
+                break;
+            case '*':
+                Y = pop();
+                X = pop();
+                push(X * Y);
+                break;
+            case '/':
+                Y = pop();
+                X = pop();
+                push(X / Y);    
+                break;
+            case '(':
+                Y = pop();
+                push(Y-1);
+                break;
+            case ')':
+                Y = pop();
+                push(Y+1);
+                break;
+            case '%':
+                Y = pop();
+                X = pop();
+                push(X % Y);
+                break;
+            case '#':
+                Y = pop();
+                X = pop();
+                int a,b=1;
+                for (a=0;a<Y;a++){
+                    b=b*X;
+                }
+                push(b);
+                break;
+            case '&':
+                Y = pop();
+                X = pop();
+                push( X & Y);
+                break;
+            case '|':
+                Y = pop();
+                X = pop();
+                push(X | Y);
+                break;
+            case '^':
+                Y = pop();
+                X = pop();
+                push( X ^ Y);
+                break;
             //push( (X & ~Y) | (~X & Y));
+            case '~':
+                Y = pop();
+                push( ~Y );
+                break;
         }
-        else if(strcmp(token,"~") == 0) {
-            int Y = pop();
-            push( ~Y );
-        }
-        
     }
 
     print(count);
