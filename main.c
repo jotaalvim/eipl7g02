@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include "parser.h"
+
 int main() {
     char line[10240];
     assert( fgets(line, 10240, stdin) != NULL );
@@ -5,3 +11,5 @@ int main() {
     parse(line);
     return 0;
 }
+
+
