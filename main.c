@@ -1,7 +1,6 @@
-/**
- * @file Ficheiro no qual se encontra o programa principal.
+/** * @file Ficheiro no qual se encontra o programa principal.
  */
-
+ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -16,12 +15,17 @@
  * @returns 0 valor 0
  */
 
+
+#include "parser.h"
+
 int main() {
     char line[10240];
-    assert( fgets(line, 10240, stdin) != NULL );
-    assert( line[strlen(line) - 1] == '\n'    );
-    parse(line);
+    STACK *s;
+    s = (STACK*)malloc(0*sizeof(DATA)); //alocar mem
+    criar_stack(s);
+    assert(fgets(line, 10240, stdin) != NULL) ;
+    assert(line[strlen(line) - 1] == '\n');
+    parse(line, s);
+    print_stack(s);
     return 0;
 }
-
-

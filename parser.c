@@ -1,7 +1,7 @@
 /**
  * @file Ficheiro no qual se encontram as funções referentes ao parser.
  */
-
+ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,80 +24,36 @@ int count = -1;
  *
  */
 void parse(char *line) {
-    int Y = *stack;
-    int X = *stack;
+    //int Y = *stack;
+    //int X = *stack;
 
     char *delims = " \t\n";
     for(char *token = strtok(line, delims); token != NULL; token = strtok(NULL, delims)) {
 
         char *sobra;
+        //char *val_i = token;
         long val_i = strtol(token, &sobra, 10);
-        if(strlen(sobra) == 0) {
-            push(val_i);
+        int temp = 1;
+
+        if(strlen(sobra)) {
+            push(s, LONG, val_i);
+            temp = 0;
         }
+        double val_d = strtod(token, &sobra);
+        if(strlen(sobra) == 0 && temp)
+            push(s, DOUBLE, val_d);
+
         switch (token[0]) {
             case '+':
-                Y = pop();
-                X = pop();
-                 push(X + Y);
-                break;
             case '-':
-                Y = pop();
-                X = pop();
-                push(X - Y); 
-                break;
             case '*':
-                Y = pop();
-                X = pop();
-                push(X * Y);
-                break;
             case '/':
-                Y = pop();
-                X = pop();
-                push(X / Y);    
-                break;
             case '(':
-                Y = pop();
-                push(Y-1);
-                break;
-            case ')':
-                Y = pop();
-                push(Y+1);
-                break;
-            case '%':
-                Y = pop();
-                X = pop();
-                push(X % Y);
-                break;
             case '#':
-                Y = pop();
-                X = pop();
-                int a,b=1;
-                for (a=0;a<Y;a++){
-                    b=b*X;
-                }
-                push(b);
-                break;
             case '&':
-                Y = pop();
-                X = pop();
-                push( X & Y);
-                break;
             case '|':
-                Y = pop();
-                X = pop();
-                push(X | Y);
-                break;
             case '^':
-                Y = pop();
-                X = pop();
-                push( X ^ Y);
-                break;
-            //push( (X & ~Y) | (~X & Y));
             case '~':
-                Y = pop();
-                push( ~Y );
-                break;
         }
     }
 
@@ -110,10 +66,6 @@ void parse(char *line) {
  *
  * @param x É o elemento que será adicionado à stack.
  */
-void push(int x) {
-    count++;
-    stack[count] = x;
-}
 
 /**
  * \brief Função auxiliar que nos permite retirar o último elemento da stack.
@@ -121,11 +73,6 @@ void push(int x) {
  *
  * @returns res Último elemento da stack.
  */
-int pop() {
-    int res = stack[count];
-    count--;
-    return res;
-}
 
 /**
  * \brief Função utilizada para imprimir a stack.

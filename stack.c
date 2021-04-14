@@ -1,53 +1,74 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stack.h>
+#include "stack.h"
+ 
 
-
-int has_type(DATA elem, int mask) {
-    return (elem.type & mask) != 0  ;
+STACK *criar_stack(STACK *s) {
+    s->n_elem = 0;
+    return 0; // NÂO DEVIA SER RETURN S?
 }
 
+void push (STACK *s, TYPE t,...) {
+	int tnovo = s->n_elem +1;
+	s->stack = realloc (s->stack, tnovo*sizeof((*s)->stack));
 
-STACK *creat_stack() {
-    STACK *s = (STACK *) malloc (sizeof (STACK));
-    s -> n_elems = 0;
-    s -> size = 100;
-    s -> stack = (DATA *) calloc (s-> size, sizeof(DATA));
-    return s;
-}
-
-void push (STACK *s, DATA elem) {
-    if (s-> size == s-> n_elems) {
-        s -> size += 100;
-        s -> stack = (DATA *) realloc (s-> stack, s-> size * sizeof(DATA));
+	va_list x;
+    va_start (x, t);
+    s->stack[s->n_elem].type = t;
+    switch (t) {
+       case LONG:  
+            s->stack[s->n_elem].val.LONG = va_arg(x, long); break;
+       case DOUBLE:
+            s->stack[s->n_elem].val.DOUBLE = va_arg(x, double); break;
+       case STRING:
+            s->stack[s->n_elem].val.STRING = va_arg(x, char*); break;
+       case CHAR:
+            s->stack[s->n_elem].val.CHAR = (char) va_arg(x, int); break;
+       default: break;                 
     }
-    s -> stack [s -> n_elems] = elem;
-    s -> n_elems ++;
+    s->n_elem++;
+    va_end(x);
 }
 
-DATA pop (STACK *s) {
-    return s-> stack [s -> n_elems -1 ];
+
+
+Valor pop(STACK *s) {
+    assert (s->stack != 0); //verificar se a stack não é vazia
+    Valor top = s->stack[s->n_elem-1].val; //elemento que vamos remover
+    int tnovo = s->n_elem-1;
+    s->n_elem = realloc(s->stack, tnovo*sizeof(*s->p)); 
+    s->n_elem--;
+    return top;
 }
 
-int is_empty(STACK *s) {
-    return s-> n_elems == 0;
+/**
+ * \brief   Função que devolve o tipo do elemento do topo da Stack.
+ * @param s Stack
+ * @returns Tipo do elemento do topo
+ */
+Valor peek (struct Stack *s) {
+    return s->stack[s->n_elem-1].TYPE;
 }
 
-void print_stack(STACK *s) {
-    for (int k = 0; k < s -> n_elems; k++) {
-        DATA elem = s-> stack[k];
-        TYPE type = elem.type;
-        switch(type) {
-            case LONG:
-                printf(" ""%ld", elem.LONG); break;
-            case DOUBLE:
-                printf(" ""%ld", elem.DOUBLE); break;
-            case CHAR:
-                printf(" ""%ld", elem.CHAR); break;
-            case STRING:
-                printf(" ""%ld", elem.STRING); break;
-        }
-    }
+
+Valor peekind (struct Stack *s, int n) {
+    return s->stack[s->n_elem-n-1].TYPE;
+}
+
+/**
+ * \brief Função que imprime a Stack.
+ * @param s Stack
+ */
+void print_stack(struct Stack *s) {
+    for (int i =0; i < s->n_elem; i++)
+      switch (s->stack[i].TYPE) {
+          case Long:
+                printf("%lu", s->stack[i].val.LONG); break;
+          case Double:
+                printf("%g", s->stack[i].val.DOUBLE); break;
+          case String:
+                printf("%s", s->stack[i].val.STRING); break;
+          case Char:
+                printf("%c", s->stack[i].val.CHAR); break;
+          default: break;
+      }
     printf("\n");
 }
-
