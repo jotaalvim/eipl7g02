@@ -1,74 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "stack.h"
- 
 
-STACK *criar_stack(STACK *s) {
-    s->n_elem = 0;
-    return 0; // NÂO DEVIA SER RETURN S?
+// 
+int has_type(DATA elem, int mask) {
+  return (elem.type & mask) != 0;
 }
 
-void push (STACK *s, TYPE t,...) {
-	int tnovo = s->n_elem +1;
-	s->stack = realloc (s->stack, tnovo*sizeof((*s)->stack));
+int what_type (DATA d) {
+    int r=0;
+    if (d.type == LONG) r=1;
+    if (d.type == DOUBLE) r=2;
+    if (d.type == CHAR) r=4;
+    if (d.type == STRING) r=8;
+    return r;   
+}
 
-	va_list x;
-    va_start (x, t);
-    s->stack[s->n_elem].type = t;
-    switch (t) {
-       case LONG:  
-            s->stack[s->n_elem].val.LONG = va_arg(x, long); break;
-       case DOUBLE:
-            s->stack[s->n_elem].val.DOUBLE = va_arg(x, double); break;
-       case STRING:
-            s->stack[s->n_elem].val.STRING = va_arg(x, char*); break;
-       case CHAR:
-            s->stack[s->n_elem].val.CHAR = (char) va_arg(x, int); break;
-       default: break;                 
+STACK *create_stack() {
+  STACK *s = (STACK *) calloc(1, sizeof(STACK));
+  s->size = 100;
+  s->stack = (DATA *) calloc(s->size, sizeof(DATA));
+  return s;
+}
+
+void push(STACK *s, DATA elem) {
+  if(s->size == s->n_elems) {
+    s->size += 100;
+    s->stack = (DATA *) realloc(s->stack, s->size * sizeof(DATA));
+  }
+  s->stack[s->n_elems] = elem;
+  s->n_elems++;
+}
+
+DATA pop(STACK *s) {
+  s->n_elems--;
+  return s->stack[s->n_elems];
+}
+
+DATA top(STACK *s) {
+  return s->stack[s->n_elems - 1];
+}
+
+int is_empty(STACK *s) {
+  return s->n_elems == 0;
+}
+
+void print_stack(STACK *s) {
+  for(int K = 0; K < s->n_elems; K++) {
+    DATA elem = s->stack[K];
+    TYPE type = elem.type;
+    switch(type) {
+      case LONG:   printf("%ld", elem.elems.LONG  ); break;
+      case DOUBLE: printf("%g" , elem.elems.DOUBLE); break;
+      case CHAR:   printf("%c" , elem.elems.CHAR  ); break;
+      case STRING: printf("%s" , elem.elems.STRING); break;
     }
-    s->n_elem++;
-    va_end(x);
+  }
+  printf("\n");                               
 }
 
-
-
-Valor pop(STACK *s) {
-    assert (s->stack != 0); //verificar se a stack não é vazia
-    Valor top = s->stack[s->n_elem-1].val; //elemento que vamos remover
-    int tnovo = s->n_elem-1;
-    s->n_elem = realloc(s->stack, tnovo*sizeof(*s->p)); 
-    s->n_elem--;
-    return top;
-}
-
-/**
- * \brief   Função que devolve o tipo do elemento do topo da Stack.
- * @param s Stack
- * @returns Tipo do elemento do topo
- */
-Valor peek (struct Stack *s) {
-    return s->stack[s->n_elem-1].TYPE;
-}
-
-
-Valor peekind (struct Stack *s, int n) {
-    return s->stack[s->n_elem-n-1].TYPE;
-}
-
-/**
- * \brief Função que imprime a Stack.
- * @param s Stack
- */
-void print_stack(struct Stack *s) {
-    for (int i =0; i < s->n_elem; i++)
-      switch (s->stack[i].TYPE) {
-          case Long:
-                printf("%lu", s->stack[i].val.LONG); break;
-          case Double:
-                printf("%g", s->stack[i].val.DOUBLE); break;
-          case String:
-                printf("%s", s->stack[i].val.STRING); break;
-          case Char:
-                printf("%c", s->stack[i].val.CHAR); break;
-          default: break;
-      }
-    printf("\n");
-}

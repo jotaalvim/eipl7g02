@@ -1,31 +1,23 @@
-/** * @file Ficheiro no qual se encontra o programa principal.
- */
- 
 #include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
 #include <string.h>
-#include "parser.h"
+#include "stack.h"
 
-/**
- * \brief Função principal do programa.
- *
- *
- *
- * @returns 0 valor 0
- */
+void imprime_tipo(STACK *s) {
+    if(has_type(top(s), STRING)) putchar('S');
+    if(has_type(top(s), INTEGER)) putchar('I');
+    if(has_type(top(s), DOUBLE)) putchar('D');
+    if(has_type(top(s), NUMBER)) putchar('N');
+}
 
+int main (void) {
+	STACK *s = create_stack();
 
-#include "parser.h"
+	DATA z;
+	make_datas(z,LONG,14);
+	push(s,z);
 
-int main() {
-    char line[10240];
-    STACK *s;
-    s = (STACK*)malloc(0*sizeof(DATA)); //alocar mem
-    criar_stack(s);
-    assert(fgets(line, 10240, stdin) != NULL) ;
-    assert(line[strlen(line) - 1] == '\n');
-    parse(line, s);
-    print_stack(s);
+	//imprime_tipo(s);
+	print_stack(s);
+
     return 0;
 }

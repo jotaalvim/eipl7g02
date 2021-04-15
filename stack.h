@@ -1,52 +1,42 @@
-#ifndef STACK_H_
-#define STACK_H_
+#ifndef ___STACK_H___
+#define ___STACK_H___
 
 #include <assert.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-//typedef permite guardar vários valores dentro de um tipo
-//de dados  
-//enum é um tipo enumerado
-typedef enum { LONG, DOUBLE , CHAR , STRING } TYPE;
 
+typedef enum {LONG = 1, DOUBLE = 2, CHAR = 4, STRING = 8} TYPE;
 
-// #define usa-se para declarar constantes(não podem ser
-// alteradas)
-#define INTEGER (LONG | CHAR )
-#define NUMBER (INTEGER | DOUBLE )
+#define INTEGER  (LONG | CHAR)
+#define NUMBER   (INTEGER | DOUBLE)
+
 
 typedef struct data {
-    Valor val;
-    TYPE type;
+  TYPE   type;
+  union {
+  long   LONG;
+  double DOUBLE;
+  char   CHAR;
+  char*  STRING;
+  } elems;
 } DATA;
- 
-union Data {
-    long LONG;
-    double DOUBLE;
-    char CHAR;
-    char *STRING;
-} Valor;
-
 
 typedef struct stack {
-    DATA *stack;
-    int n_elems;
+  DATA *stack;
+  int size;
+  int n_elems;
 } STACK;
 
+#define make_datas(var, TYPE, value)     \
+        var.elems.TYPE =value;           \
+        var.type       =TYPE;                      
 
-STACK *criar_stack(STACK *s);
 
-
-void push(STACK *s,TYPE t,...);
-
-TYPE pop(struct STACK *s);
-
-TYPE peek (struct STACK *s);
-
-// peekind
-
-void print_stack(struct STACK *s);
-
+int has_type(DATA elem, int mask);
+int what_type (DATA d);
+STACK *create_stack();
+void push(STACK *s, DATA elem);
+DATA pop(STACK *s);
+DATA top(STACK *s);
+int is_empty(STACK *s);
+void print_stack(STACK *s);
 
 #endif
