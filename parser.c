@@ -212,25 +212,27 @@ void und(STACK *s) {
 
 
 
-//void tpindex (STACK *s) {
-//    DATA a = pop(s);
-//    TYPE ta = a.type;
-//    if (ta == LONG) {
-//        DATA z;
-//        make_datas(z,LONG,s->p.elems.LONG);
-//        //s->p[(s->size)-1-v_n.l].valor.l
-//        push(s,z);
-//    } else
-//    if (ta == DOUBLE) {
-//        
-//    } else
-//    if (ta == CHAR) {
-//        
-//    } else 
-//    if (ta == STRING) {
-//        
-//    }
-//}
+void tpindex (STACK *s) {
+    DATA a = pop(s);
+    TYPE ta = a.type;
+
+    if (ta == LONG) {
+        DATA z;
+        make_datas(z,LONG,s->stack[s->n_elems-y-1]);
+        push(s,z);
+    } else
+    if (ta == DOUBLE) {
+        DATA z;
+        make_datas(z,LONG,s->stack[s->n_elems-y-1]);
+        push(s,z);
+    } else
+    if (ta == CHAR) {
+        
+    } else 
+    if (ta == STRING) {
+        
+    }
+}
 
 void lei (STACK*s){
     char x[256];

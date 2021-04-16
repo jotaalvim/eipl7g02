@@ -28,14 +28,6 @@ void imprime_tipo(STACK *s) {
  * @returns 0  
  */
 int main (void) {
-    //STACK *s = create_stack();
-    //DATA z;
-    //make_datas(z,LONG,14);
-    //push(s,z);
-    ////imprime_tipo(s);
-    //print_stack(s);
-    //return 0;
-
 
     char line[10240];
     STACK *s;
