@@ -4,7 +4,6 @@
  */
 
 
-
 #ifndef ___STACK_H___
 #define ___STACK_H___
 
@@ -12,14 +11,16 @@
 
 
 /**
- * \brief Define os os diferentes tipos que um elemento da Stack poderá assumir.
+ * \brief Define os diferentes tipos que um elemento da Stack poderá assumir.
  */
 typedef enum {LONG = 1, DOUBLE = 2, CHAR = 4, STRING = 8} TYPE;
 
 #define INTEGER  (LONG | CHAR)
 #define NUMBER   (INTEGER | DOUBLE)
 
-
+/**
+ * \brief Define os datatypes em que um certo valor será guardado.
+ */
 typedef struct data {
   TYPE   type;
   union {
@@ -30,18 +31,22 @@ typedef struct data {
   } elems;
 } DATA;
 
+ /**
+ * \brief Define a constituição de uma Stack.
+ */
 typedef struct stack {
   DATA *stack;
   int size;
   int n_elems;
 } STACK;
 
+
 #define make_datas(var, TYPE, value)     \
         var.elems.TYPE =value;           \
         var.type       =TYPE;                      
 
 
-int has_type(DATA elem, int mask);
+//int has_type(DATA elem, int mask);
 
  /**
  * \brief Função que atribui um número ao type de um dado DATA.
