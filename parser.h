@@ -1,3 +1,9 @@
+ /**
+ @file  parser.h
+ @brief Ficheiro com as funções relativas ao parser.
+ */
+
+ 
 #ifndef parser_h_
 #define parser_h_
 

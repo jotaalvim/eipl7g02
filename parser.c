@@ -127,7 +127,7 @@ void parF(STACK *s) {
     }
 }
 
-void mod(STACK *s) { // FIXME NÂO FUNCIONA
+void mod(STACK *s) {
     DATA p = pop(s);
     DATA z = pop(s);
     DATA k;
@@ -209,6 +209,7 @@ void und(STACK *s) {
     push(s,a);
     push(s,a);
 }
+
 
 
 //void tpindex (STACK *s) {
