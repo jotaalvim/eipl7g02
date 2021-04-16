@@ -1,3 +1,8 @@
+ /**
+ @file main.c 
+ @brief Ficheiro no qual se encontram as funções principais do programa.
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include "stack.h"
@@ -5,6 +10,10 @@
 #include "parser.h"
 
 #include <stdlib.h>
+
+ /**
+ * \brief Função que imprime o tipo do elemento no topo da Stack.
+ */
 void imprime_tipo(STACK *s) {
     if(has_type(top(s), STRING)) putchar('S');
     if(has_type(top(s), INTEGER)) putchar('I');
@@ -12,6 +21,11 @@ void imprime_tipo(STACK *s) {
     if(has_type(top(s), NUMBER)) putchar('N');
 }
 
+
+/**
+ * \brief Função principal do programa.
+ * @returns 0  
+ */
 int main (void) {
     //STACK *s = create_stack();
     //DATA z;
