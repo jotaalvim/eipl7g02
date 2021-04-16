@@ -1,8 +1,19 @@
+/**
+ @file parser.c
+ @brief Ficheiro com as funções relativas às operações aritméticas e ao parser.
+ */
+
+
 #include "parser.h"
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 
+
+/**
+ * \brief Função que soma os 2 elementos do topo da Stack.
+ * @param s Stack
+ */
 void soma(STACK *s) {
     DATA p = pop(s);
     TYPE tp = p.type;
@@ -26,7 +37,10 @@ void soma(STACK *s) {
         push(s,z);}
 }
 
-
+/**
+ * \brief Função que subtrai o elemento do topo da Stack ao elemento seguinte.
+ * @param s Stack
+ */
 void sub(STACK *s){
     DATA p = pop(s);
     TYPE tp = p.type;
@@ -49,6 +63,11 @@ void sub(STACK *s){
         push(s,z);}
 } 
 
+
+/**
+ * \brief Função que divide o 2º elemento da Stack pelo elemento do topo da Stack.
+ * @param s Stack
+ */
 void divi(STACK *s) {
     DATA p = pop(s);
     TYPE tp = p.type;
@@ -71,6 +90,12 @@ void divi(STACK *s) {
         make_datas(z, DOUBLE, sg.elems.DOUBLE/p.elems.DOUBLE);
         push(s,z);}
 } 
+
+
+/**
+ * \brief Função que multiplica os 2 primeiros elementos do topo da Stack.
+ * @param s Stack
+ */
 void mult(STACK *s) {
     DATA p = pop(s);
     TYPE tp = p.type;
@@ -92,6 +117,12 @@ void mult(STACK *s) {
         make_datas(z,DOUBLE,p.elems.DOUBLE*sg.elems.DOUBLE);
         push(s,z);}
 }
+
+
+/**
+ * \brief Função que decrementa 1 valor ao elemento do topo da Stack.
+ * @param s Stack
+ */
 void parA(STACK *s) {
     DATA p = pop(s);
     TYPE tp = p.type;
@@ -109,6 +140,11 @@ void parA(STACK *s) {
         push(s,q);
     }
 }
+
+/**
+ * \brief Função que incrementa 1 valor ao elemento do topo da Stack.
+ * @param s Stack
+ */
 void parF(STACK *s) {
     DATA p = pop(s);
     TYPE tp = p.type;
@@ -127,6 +163,10 @@ void parF(STACK *s) {
     }
 }
 
+/**
+ * \brief Função que devolve o resto da divisão inteira do 2º elemento pelo 1º elemento do topo da Stack.
+ * @param s Stack
+ */
 void mod(STACK *s) {
     DATA p = pop(s);
     DATA z = pop(s);
@@ -135,6 +175,10 @@ void mod(STACK *s) {
     push(s,k);
 }
 
+/**
+ * \brief Função que calcula a potência que tem como base o elemento do topo da Stack e como expoente o elemento seguinte.
+ * @param s Stack
+ */
 void expo (STACK *s) {
     DATA p = pop(s);
     TYPE tp = p.type;
@@ -157,6 +201,10 @@ void expo (STACK *s) {
         push(s,z);}
 }
 
+/**
+ * \brief Operador bitwise em que cada bit é comparado e é retornado o valor 1 quando ambos os bits forem 1 e 0 caso contrário.
+ * @param s Stack
+ */
 void con(STACK *s) {
     DATA p = pop(s);
     DATA sg = pop(s);
@@ -165,6 +213,10 @@ void con(STACK *s) {
     push(s,z);
 }
 
+/**
+* \brief Operador bitwise em que cada bit é comparado e é retornado o valor 1 quando um dos bits for 1 e 0 caso contrário.
+* @param s Stack
+*/
 void dis(STACK *s) {
     DATA p = pop(s);
     DATA sg = pop(s);
@@ -173,6 +225,10 @@ void dis(STACK *s) {
     push(s,z);
 }
 
+/**
+* \brief Operador bitwise em que cada bit é comparado e é retornado o valor 1 quando os bits comparados são diferentes e 0 caso contrário.
+* @param s Stack
+*/
 void xor(STACK *s) {
     DATA p = pop(s);
     DATA sg = pop(s);
@@ -181,6 +237,10 @@ void xor(STACK *s) {
     push(s,z);
 }
 
+/**
+* \brief Operador bitwise em que cada bit é comparado e é retornado o valor representado em Complemento2.
+* @param s Stack
+*/
 void not(STACK *s) {
     DATA p = pop(s);
     DATA z;
@@ -188,6 +248,10 @@ void not(STACK *s) {
     push(s,z);
 }
 
+/**
+* \brief Função que troca os três elementos do topo da Stack entre si.
+* @param s Stack
+*/
 void arr(STACK *s) {
     DATA a = pop(s);
     DATA b = pop(s);
@@ -197,6 +261,10 @@ void arr(STACK *s) {
     push(s,c);
 }
 
+/**
+ * \brief Função que troca os dois elementos do topo da Stack.
+ * @param s Stack
+ */
 void stop(STACK *s) {
     DATA a = pop(s);
     DATA b = pop(s);
@@ -204,6 +272,11 @@ void stop(STACK *s) {
     push(s,b);
 }
 
+
+/**
+ * \brief Função que duplica o elemento no topo da Stack.
+ * @param s Stack
+ */
 void und(STACK *s) {
     DATA a = pop(s);
     push(s,a);
@@ -211,7 +284,11 @@ void und(STACK *s) {
 }
 
 
-
+/**
+ * \brief Função que procura ao longo da stack o número de índice 'n'
+ *        e repeti-lo no fim da stack.
+ * @param s Stack
+ */
 //void tpindex (STACK *s) {
 //    DATA a = pop(s);
 //    TYPE ta = a.type;
@@ -232,6 +309,10 @@ void und(STACK *s) {
 //    }
 //}
 
+/**
+* \brief Função que lê uma linha.
+* @param s Stack
+*/
 void lei (STACK*s){
     char x[256];
     assert(scanf("\n%100[^\n]", x) == 1);
@@ -240,6 +321,10 @@ void lei (STACK*s){
     push(s,z);
 }
 
+/**
+* \brief Função que converte o elemento no topo da Stack num Char.
+* @param s Stack 
+*/
 void trsc (STACK*s){
     DATA a = pop(s);
     TYPE ta= a.type;
@@ -258,6 +343,10 @@ void trsc (STACK*s){
     }
 }
 
+/**
+* \brief Função que converte o elemento no topo da Stack num Inteiro.
+* @param s Stack 
+*/
 void trsi (STACK*s){
     DATA a = pop(s);
     TYPE ta= a.type;
@@ -281,6 +370,10 @@ void trsi (STACK*s){
     }
 }
 
+/**
+* \brief Função que converte o elemento no topo da Stack num Double.
+* @param s Stack 
+*/
 void trsd (STACK*s){
     DATA a = pop(s);
     TYPE ta= a.type;
@@ -304,6 +397,13 @@ void trsd (STACK*s){
     }
 }
 
+/**
+ * \brief      Função que divide uma dada string usando delimitadores, separando os números dos operadores.
+ *             É comparado o token com todos os possiveis operadores aritméticos, sendo chamada a função correspondente ao operador dado.
+ *
+ * @param line A linha que foi lida e à qual se irá aplicar o parse
+ * @param s    Stack
+ */
 void parse(char *line, STACK *string) {
     char *delims = " \t\n";
     for(char *token = strtok(line, delims); token != NULL; token = strtok(NULL, delims)) {
