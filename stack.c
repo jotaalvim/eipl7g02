@@ -42,9 +42,14 @@ DATA top(STACK *s) {
   return s->stack[s->n_elems - 1];
 }
 
+//TYPE peek( STACK *s) {
+//  return s->stack[s->n_elems - 1].type;
+//}
+
 int is_empty(STACK *s) {
   return s->n_elems == 0;
 }
+
 
 void print_stack(STACK *s) {
   for(int K = 0; K < s->n_elems; K++) {

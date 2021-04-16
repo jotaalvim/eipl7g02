@@ -27,8 +27,7 @@ typedef struct stack {
 
 #define make_datas(var, TYPE, value)     \
         var.elems.TYPE =value;           \
-        var.type       =TYPE;                      
-
+        var.type       =TYPE;            
 
 int has_type(DATA elem, int mask);
 int what_type (DATA d);
@@ -36,6 +35,7 @@ STACK *create_stack();
 void push(STACK *s, DATA elem);
 DATA pop(STACK *s);
 DATA top(STACK *s);
+//TYPE peek(STACK *s)
 int is_empty(STACK *s);
 void print_stack(STACK *s);
 
