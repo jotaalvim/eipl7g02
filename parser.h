@@ -31,7 +31,7 @@ void sub(STACK *s);
  */
 void mult(STACK *s);
 
-/**
+/**s
  * \brief   Função que divide o 2º elemento do topo da Stack pelo elemento do topo da Stack.
  * @param s Stack
  */
@@ -99,13 +99,15 @@ void not (STACK *s);
 
 void trsc (STACK*s);
 
-void arr(STACK *s);
+void arr(STACK*s);
 
-void stop(STACK *s);
+void stop(STACK*s);
 
-void und(STACK *s);
+void und(STACK*s);
 
 void lei (STACK*s);
+
+void tpi (STACK*s);
 
 void trsc (STACK*s);
 
