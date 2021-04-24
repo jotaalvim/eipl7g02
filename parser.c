@@ -393,6 +393,114 @@ void trsd (STACK*s){
     }
 }
 
+void a(STACK *s) {
+    DATA z;
+    make_datas(z,LONG,10);
+    push(s,z);
+}
+
+
+void b(STACK *s) {
+    DATA z;
+    make_datas(z,LONG,11);
+    push(s,z);
+}
+
+void c(STACK *s) {
+    DATA z;
+    make_datas(z,LONG,12);
+    push(s,z);
+}
+
+void d(STACK *s) {
+    DATA z;
+    make_datas(z,LONG,13);
+    push(s,z);
+}
+
+void e(STACK *s) {
+    DATA z;
+    make_datas(z,LONG,14);
+    push(s,z);
+}
+
+void f(STACK *s) {
+    DATA z;
+    make_datas(z,LONG,15);
+    push(s,z);
+}
+
+void n(STACK *s) {
+    DATA z;
+    make_datas(z,CHAR,'\n');
+    push(s,z);
+}
+
+void s(STACK *st) {
+    DATA z;
+    make_datas(z,CHAR,' ');
+    push(st,z);
+}
+
+void x(STACK *s) {
+    DATA z;
+    make_datas(z,LONG,0);
+    push(s,z);
+}
+
+void y(STACK *s) {
+    DATA z;
+    make_datas(z,LONG,1);
+    push(s,z);
+}
+
+void z(STACK *s) {
+    DATA k;
+    make_datas(k,LONG,2);
+    push(s,k);
+}
+
+void igual(STACK *s) {
+    trsd(s);
+    DATA a = pop(s);
+    trsd(s);
+    DATA b = pop(s);
+    make_datas(a,LONG,(int) a.elems.LONG==b.elems.LONG);
+    push(s,a);
+}
+
+void menor (STACK *s) {
+    trsd(s);
+    DATA a = pop(s);
+    trsd(s);
+    DATA b = pop(s);
+    make_datas(a,LONG,(int) (a.elems.DOUBLE<b.elems.DOUBLE));
+    push(s,a);
+}
+
+void maior (STACK *s) {
+    trsd(s);
+    DATA a = pop(s);
+    trsd(s);
+    DATA b = pop(s);
+    make_datas(a,LONG,(int)( a.elems.DOUBLE>b.elems.DOUBLE));
+    push(s,a);
+}
+
+void nao (STACK *s) {
+    trsd(s);
+    DATA a = pop(s);
+    make_datas(a,LONG,! a.elems.LONG);
+    push(s,a);
+}
+
+void maior (STACK *s) {
+    DATA a = pop(s);
+    DATA b = pop(s);
+    make_datas(a,LONG,(int)( a.elems.DOUBLE>b.elems.DOUBLE));
+    push(s,a);
+}
+
 /**
  * \brief      Função que divide uma dada string usando delimitadores, separando os números dos operadores.
  *             É comparado o token com todos os possiveis operadores aritméticos, sendo chamada a função correspondente ao operador dado.
@@ -465,6 +573,38 @@ void parse(char *line, STACK *string) {
                     trsi(string); break;
                 case 'f' :
                     trsd(string); break;
+                
+                case 'A' :
+                    a(string); break;
+                case 'B' :
+                    b(string); break;
+                case 'C' :
+                    c(string); break;
+                case 'D' :
+                    d(string); break;
+                case 'E' :
+                    e(string); break;
+                case 'F' :
+                    f(string); break;
+                case 'N' :
+                    n(string); break;
+                case 'S' :
+                    s(string); break;
+                case 'X' :
+                    x(string); break;
+                case 'Y' :
+                    y(string); break;
+                case 'Z' :
+                    z(string); break;
+                
+                case '=' :
+                    igual(string); break;
+                case '<' :
+                    menor(string); break;
+                case '>' :
+                    maior(string); break;
+				case '!' :
+                    nao(string); break;
                 default : break;
             }
     }
