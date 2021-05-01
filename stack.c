@@ -7,13 +7,6 @@
 
 #include "stack.h"
 
-
-
-int has_type(DATA elem, int mask) {
-  return (elem.type & mask) != 0;
-}
-
-
  /**
  * \brief Função que atribui um número ao type de um dado DATA.
  * @param d DATA 
