@@ -15,7 +15,15 @@
  */
 typedef enum {LONG = 1, DOUBLE = 2, CHAR = 4, STRING = 8} TYPE;
 
+
+/**
+ * \brief É uma macro dos tipos LONG e CHAR.
+ */
 #define INTEGER  (LONG | CHAR)
+
+/**
+ * \brief É uma macro dos tipos INTEGER e DOUBLE.
+ */
 #define NUMBER   (INTEGER | DOUBLE)
 
 /**
@@ -30,7 +38,9 @@ typedef struct data {
     char*  STRING;
   } elems;
 } DATA;
-/** * \brief Define a constituição de uma Stack.  */ 
+/** 
+*\brief Define a constituição de uma Stack.  
+*/ 
 typedef struct stack {
   DATA *stack;
   int size;
@@ -38,9 +48,10 @@ typedef struct stack {
 } STACK;
 
 
+/**
+ * \brief É uma macro.
+ */
 #define make_datas(var,TYPE,value)  { var.elems.TYPE =value;   var.type=TYPE; } 
-
-int has_type(DATA elem, int mask);
 
  /**
  * \brief Função que atribui um número ao type de um dado DATA.

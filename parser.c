@@ -8,10 +8,11 @@
 #include <stdio.h>
 
 
-//FIXME FAZER UMA FUNÇAO ARITMÈTICA
-//ter double d1,d2
-//long d1, d2
-//e usar o que me interessa a partir dai
+/**
+ * \brief Função que realiza uma determinada operação aritmética (determinada pelo caracter dado) aos dois elementos do topo da Stack.
+ * @param s Stack
+ * @param c Caracter que vai determinar a operação aritmética a realizar
+ */
 void aritmetica (STACK *s, char *c) {//c é o operdor
     DATA a, da, ia, z, b, db, ib; 
     TYPE ta, tb;
@@ -99,42 +100,6 @@ void aritmetica (STACK *s, char *c) {//c é o operdor
     push(s,z);
 }
 
-
-//void constantes (STACK *s, char c) {
-//    DATA z;
-//    
-//    switch (c) {
-//        case 'A' :
-//            {make_datas(z,LONG,10)}; break;
-//        case 'B' :
-//            {make_datas(z,LONG,11)}; break;
-//        case 'C' :
-//            {make_datas(z,LONG,12)}; break;  
-//        case 'D' :
-//            {make_datas(z,LONG,13)}; break;
-//        case 'E' :
-//            {make_datas(z,LONG,14)}; break;
-//        case 'F' :
-//            {make_datas(z,LONG,15)}; break;
-//        case 'N' :
-//            {make_datas(z,CHAR,'\n')}; break;
-//        case 'S' :
-//            {make_datas(z,CHAR,' ')};break;
-//        case 'X' :
-//            {make_datas(z,LONG,0)}; break;
-//        case 'Y' :
-//            {make_datas(z,LONG,1)}; break;
-//        case 'Z' :
-//            {make_datas(z,LONG,2)}; break;
-//        case ':' :
-//            break;
-//
-//        default : printf("sitio inesperado, '%c'",c);break;
-//    }
-//    push(s,z);
-//} 
-
-
 /**
  * \brief Função que decrementa 1 valor ao elemento do topo da Stack.
  * @param s Stack
@@ -179,6 +144,10 @@ void parF(STACK *s) {
     }
 }
 
+/**
+ * \brief Função bitwise que incrementa e troca o sinal do elemento no topo da stack.
+ * @param s Stack
+ */
 void not(STACK *s) {
     DATA p = pop(s);
     DATA z;
@@ -223,7 +192,10 @@ void und(STACK *s) {
 }
 
 
-
+/**
+ * \brief Função que copia o n-ésimo elemento (definido pelo elemento que se encontra no topo da stack) para o topo da Stack.
+ * @param s Stack
+ */
 void tpi (STACK *s) {
     DATA a = pop(s);
     TYPE ta = a.type;
@@ -332,7 +304,11 @@ void trsd (STACK*s){
     }
 }
 
-
+/**
+ * \brief Função que compara os dois elementos do topo da Stack dependendo do caracter dado.
+ * @param s Stack
+ * @param c Caracter que corresponde a um dos sinais de comparação lógicos
+ */
 void compara(STACK *s, char c) {
     DATA a, da, z, b, db;//ia, ib 
     TYPE ta, tb;
@@ -390,42 +366,10 @@ void compara(STACK *s, char c) {
     push(s,z);
 }
 
-//void igual(STACK *s) {
-//    trsd(s);
-//    DATA a = pop(s);
-//    trsd(s);
-//    DATA b = pop(s);
-//    double va = a.elems.DOUBLE;
-//    double vb = b.elems.DOUBLE;
-//    DATA z;
-//    if (va == vb) { 
-//        make_datas(z,LONG, 1);
-//    }
-//    else {
-//        make_datas(z,LONG, 0);
-//    }
-//    push(s,z);
-//    //FIXME 
-//}
-//
-//void menor (STACK *s) {
-//    trsd(s);
-//    DATA a = pop(s);
-//    trsd(s);
-//    DATA b = pop(s);
-//    make_datas(a,LONG,(int) (a.elems.DOUBLE<b.elems.DOUBLE));
-//    push(s,a);
-//}
-//
-//void maior (STACK *s) {
-//    trsd(s);
-//    DATA a = pop(s);
-//    trsd(s);
-//    DATA b = pop(s);
-//    make_datas(a,LONG,(int)( a.elems.DOUBLE>b.elems.DOUBLE));
-//    push(s,a);
-//}
-
+/**
+ * \brief Função que funciona como um "Não" lógico.
+ * @param s Stack
+ */
 void nao (STACK *s) {
     trsd(s);
     DATA a = pop(s);
@@ -433,32 +377,21 @@ void nao (STACK *s) {
     push(s,a);
 }
 
-void ee (STACK *s) {
-    trsd(s);
-    DATA a = pop(s);
-    trsd(s);
-    DATA b = pop(s);
-    if (!b.elems.DOUBLE) {make_datas(a,DOUBLE,0);}
-    push(s,a);
-}
-
-void emenor (STACK *s) {
-    DATA a = pop(s);
-    TYPE ta = a.type;
-    DATA b = pop(s);
-    TYPE tb = b.type;
-    if (ta == STRING && tb == STRING) 
-        strcmp(a.elems.STRING,b.elems.STRING) < 0 ? push(s,a) : push(s,b);
-    else 
-    if (ta == LONG && tb == LONG)
-        a.elems.LONG > b.elems.LONG ? push(s,a) : push(s,b);
-}
-
+/**
+ * \brief Função que guarda numa variável o valor que se encontra no topo da Stack. 
+ * @param s Stack
+ * @param c Caracter que corresponde à letra da variavel
+ * @param ll[] 
+ */
 void guardavar (STACK *s, char c, DATA ll[]) {
     DATA a = top(s);
     ll[c-'A'] = a;
 }
 
+/**
+ * \brief Função que dados os 3 valores dos elementos no topo da Stack devolve o segundo caso o valor lógico do primeiro seja verdadeiro, caso contrário devolve o terceiro.
+ * @param s Stack
+ */
 void ifthenelse(STACK *s) {
     DATA a,b,c;
     a = pop(s);
@@ -470,7 +403,10 @@ void ifthenelse(STACK *s) {
         push(s,a);
 }
 
-
+/**
+ * \brief Função que inicializa um array de Datas com os respetivos valores por omissão.
+ * @param ll Lista de Letras
+ */
 void initVetor(DATA *ll) {
     make_datas(ll[0],LONG,10);
     make_datas(ll[1],LONG,11); 
@@ -512,7 +448,8 @@ void parse(char *line, STACK *stack) {
             make_datas(k, DOUBLE, val_d);
             push(stack,k);
         }
-        else if (temp) {
+        else 
+        if (temp) {
             if (strchr("+-/*^%#&|e",*token)) {
                 aritmetica(stack,token); 
             }   
