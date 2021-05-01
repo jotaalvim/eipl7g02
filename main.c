@@ -28,11 +28,9 @@ void imprime_tipo(STACK *s) {
  * @returns 0  
  */
 int main (void) {
-
     char line[10240];
     STACK *s;
-    s = (STACK*)malloc(0*sizeof(DATA)); //alocar mem
-    create_stack(s);
+    s = create_stack();
     assert(fgets(line, 10240, stdin) != NULL) ;
     assert(line[strlen(line) - 1] == '\n');
     parse(line, s);

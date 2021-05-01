@@ -1,5 +1,4 @@
-/**
- @file  stack.c
+/** @file  stack.c
  @brief Ficheiro com funções relativas à Stack.
  */
 
@@ -113,4 +112,5 @@ void print_stack(STACK *s) {
   }
   printf("\n");                               
 }
+
 

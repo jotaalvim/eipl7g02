@@ -12,7 +12,7 @@
 //ter double d1,d2
 //long d1, d2
 //e usar o que me interessa a partir dai
-void aritmetica (STACK *s, char c) {//c é o operdor
+void aritmetica (STACK *s, char *c) {//c é o operdor
     DATA a, da, ia, z, b, db, ib; 
     TYPE ta, tb;
     a = top(s); // a ori
@@ -34,121 +34,105 @@ void aritmetica (STACK *s, char c) {//c é o operdor
     ib = top(s); // b int
     
     z = pop(s); 
-    double daf = da.elems.DOUBLE;
-    double dbf = db.elems.DOUBLE; 
-    int    iaf = ia.elems.LONG;
-    int    ibf = ib.elems.LONG; 
+    double daf = da.elems.DOUBLE, dbf = db.elems.DOUBLE,x2; 
+    int    iaf = ia.elems.LONG,   ibf = ib.elems.LONG, x ; 
     if (tb == DOUBLE || ta == DOUBLE ){ 
-        switch (c) {
-            case '+':
-                make_datas(z,DOUBLE,daf+dbf);
-                push(s,z); 
-                break;
-            case '-':
-                make_datas(z,DOUBLE,dbf-daf);
-                push(s,z); 
-                break;
-            case '/':
-                make_datas(z,DOUBLE,dbf/daf);
-                push(s,z); 
-                break;
-            case '*':
-                make_datas(z,DOUBLE,daf*dbf);
-                push(s,z); 
-                break;
-            case '%':
-                make_datas(z,LONG,ibf%iaf);
-                push(s,z); 
-                break;
-            case '&':
-                make_datas(z,LONG,iaf&ibf);
-                push(s,z); 
-                break;
-            case '|':
-                make_datas(z,LONG,iaf||ibf);
-                push(s,z); 
-                break;
-            case '^':
-                make_datas(z,LONG,ibf^iaf);
-                push(s,z); 
-                break;
-            case '#':
-                make_datas(z,DOUBLE,pow(dbf,daf));
-                push(s,z); 
-                break;
+        switch (*c) {
+            case '+': make_datas(z,DOUBLE,daf+dbf);break;
+            case '-': make_datas(z,DOUBLE,dbf-daf);break;
+            case '/': make_datas(z,DOUBLE,dbf/daf);break;
+            case '*': make_datas(z,DOUBLE,daf*dbf);break;
+            case '%': make_datas(z,LONG,ibf%iaf);break;
+            case '&': make_datas(z,LONG,iaf&ibf);break;
+            case '|': make_datas(z,LONG,iaf||ibf);break;
+            case '^': make_datas(z,LONG,ibf^iaf);break;
+            case '#': make_datas(z,DOUBLE,pow(dbf,daf));break;
+            case 'e':
+                switch (*(c+1)) {
+                    case '&':
+                        x2 = dbf ? daf : 0 ;
+                        make_datas(z,DOUBLE,x2); break;
+                    case '|':
+                        x2 = dbf ? dbf : daf ;
+                        make_datas(z,DOUBLE,x2); break;
+                    case '<':
+                        x2 = dbf < daf ? dbf : daf;
+                        make_datas(z,DOUBLE,x2); break;
+                    case '>':
+                        //printf("\n%f %f\n",dbf, daf); 
+                        x2 = (dbf > daf) ? dbf : daf;
+                        //printf("\n%f\n",x2); 
+                        make_datas(z,DOUBLE,x2); break;
+                    default : printf("sitio inesperado, '%c'",*c);break;
+                }break;
+            default : printf("sitio inesperado, '%c'",*c);break;
         }
     }
     else 
-        switch (c) {
-            case '+':
-                make_datas(z,LONG,iaf+ibf);
-                push(s,z); 
-                break;
-            case '-': 
-                make_datas(z,LONG,ibf-iaf);
-                push(s,z); 
-                break;
-            case '/':
-                make_datas(z,LONG,ibf/iaf);
-                push(s,z); 
-                break;
-            case '*':
-                make_datas(z,LONG,iaf*ibf);
-                push(s,z); 
-                break;
-            case '%':
-                make_datas(z,LONG,ibf%iaf);
-                push(s,z); 
-                break;
-            case '&':
-                make_datas(z,LONG,iaf&ibf);
-                push(s,z); 
-                break;
-            case '|':
-                make_datas(z,LONG,iaf||ibf);
-                push(s,z); 
-                break;
-            case '^':
-                make_datas(z,LONG,ibf^iaf);
-                push(s,z); 
-                break;
-            case '#':
-                make_datas(z,DOUBLE,pow(dbf,daf));
-                push(s,z); 
-                break;
+        switch (*c) {
+            case '+': make_datas(z,LONG,iaf+ibf);break;
+            case '-': make_datas(z,LONG,ibf-iaf);break;
+            case '/': make_datas(z,LONG,ibf/iaf);break;
+            case '*': make_datas(z,LONG,iaf*ibf);break;
+            case '%': make_datas(z,LONG,ibf%iaf);break;
+            case '&': make_datas(z,LONG,iaf&ibf);break;
+            case '|': make_datas(z,LONG,iaf||ibf);break;
+            case '^': make_datas(z,LONG,ibf^iaf);break;
+            case '#': make_datas(z,DOUBLE,pow(dbf,daf));break;
+            case 'e': 
+                switch (*(c+1)) {
+                    case '&': 
+                        x = ibf ? iaf : 0 ;
+                        make_datas(z,LONG,x); break;
+                    case '|':
+                        x = ibf ? ibf : iaf ;
+                        make_datas(z,LONG,x); break;
+                    case '<':
+                        x = ibf < iaf ? ibf : iaf ;
+                        make_datas(z,LONG,x); break;
+                    case '>':
+                        x = ibf > iaf ? ibf : iaf ;
+                        make_datas(z,LONG,x); break;
+                    default : printf("sitio inesperado, '%c'",*c);break; }break;
+            default : printf("sitio inesperado, '%c'",*c);break;
     }
+    push(s,z);
 }
 
 
-void constantes (STACK *s, char c) {
-    DATA z;
-    switch (c) {
-        case 'A' :
-            {make_datas(z,LONG,10)}; break;
-        case 'B' :
-            {make_datas(z,LONG,11)}; break;
-        case 'C' :
-            {make_datas(z,LONG,12)}; break;  
-        case 'D' :
-            {make_datas(z,LONG,13)}; break;
-        case 'E' :
-            {make_datas(z,LONG,14)}; break;
-        case 'F' :
-            {make_datas(z,LONG,15)}; break;
-        case 'N' :
-            {make_datas(z,CHAR,'\n')}; break;
-        case 'S' :
-            {make_datas(z,CHAR,' ')};break;
-        case 'X' :
-            {make_datas(z,LONG,0)}; break;
-        case 'Y' :
-            {make_datas(z,LONG,1)}; break;
-        case 'Z' :
-            {make_datas(z,LONG,2)}; break;
-        default : break;
-    }
-    push(s,z);
-} 
+//void constantes (STACK *s, char c) {
+//    DATA z;
+//    
+//    switch (c) {
+//        case 'A' :
+//            {make_datas(z,LONG,10)}; break;
+//        case 'B' :
+//            {make_datas(z,LONG,11)}; break;
+//        case 'C' :
+//            {make_datas(z,LONG,12)}; break;  
+//        case 'D' :
+//            {make_datas(z,LONG,13)}; break;
+//        case 'E' :
+//            {make_datas(z,LONG,14)}; break;
+//        case 'F' :
+//            {make_datas(z,LONG,15)}; break;
+//        case 'N' :
+//            {make_datas(z,CHAR,'\n')}; break;
+//        case 'S' :
+//            {make_datas(z,CHAR,' ')};break;
+//        case 'X' :
+//            {make_datas(z,LONG,0)}; break;
+//        case 'Y' :
+//            {make_datas(z,LONG,1)}; break;
+//        case 'Z' :
+//            {make_datas(z,LONG,2)}; break;
+//        case ':' :
+//            break;
+//
+//        default : printf("sitio inesperado, '%c'",c);break;
+//    }
+//    push(s,z);
+//} 
 
 
 /**
@@ -350,15 +334,16 @@ void trsd (STACK*s){
 
 
 void compara(STACK *s, char c) {
-    DATA a, da, ia, z, b, db, ib; 
+    DATA a, da, z, b, db;//ia, ib 
     TYPE ta, tb;
+    int x;
     a = top(s); // a ori
     ta = a.type;
-    
+
     trsd(s);      
     da = top(s); // a double
-    trsi(s);      
-    ia = top(s); // a int
+    //trsi(s);      
+    //ia = top(s); // a int
     
     z = pop(s); 
       
@@ -367,54 +352,79 @@ void compara(STACK *s, char c) {
      
     trsd(s);      
     db = top(s); // b double
-    trsi(s);      
-    ib = top(s); // b int
+    z = pop(s); 
+    //trsi(s);      
+    //ib = top(s); // b int
+    double daf = da.elems.DOUBLE, dbf = db.elems.DOUBLE; 
+    //int    iaf = ia.elems.LONG;
+    //int    ibf = ib.elems.LONG; 
     
     if (ta == STRING && tb == STRING) {
         switch( c ) {
-            case '=' : break;
-            case '<' : break;
-            case '>' : break;
-            case '!' : break;
+            case '=' : 
+                x = strcmp(a.elems.STRING,b.elems.STRING) == 0 ? 1: 0;
+                make_datas(z,LONG,x); break;
+            case '<' : 
+                x = strcmp(a.elems.STRING,b.elems.STRING) < 0 ? 1: 0;
+                make_datas(z,LONG,x); break;
+            case '>' : 
+                x = strcmp(a.elems.STRING,b.elems.STRING) > 0 ? 1: 0;
+                make_datas(z,LONG,x); break;
+            default : printf("sitio inesperado, '%c'",c);break;
         }
     } 
-
-}
-void igual(STACK *s) {
-    trsd(s);
-    DATA a = pop(s);
-    trsd(s);
-    DATA b = pop(s);
-    double va = a.elems.DOUBLE;
-    double vb = b.elems.DOUBLE;
-    DATA z;
-    if (va == vb) { 
-        make_datas(z,LONG, 1);
-    }
     else {
-        make_datas(z,LONG, 0);
-    }
+        switch( c ) {
+            case '=' :
+                x = dbf == daf ? 1: 0;
+                make_datas(z,LONG,x); break;
+            case '<' :
+                x = dbf < daf ? 1: 0;
+                make_datas(z,LONG,x); break;
+            case '>' : 
+                x = dbf > daf ? 1: 0;
+                make_datas(z,LONG,x); break;
+            default : printf("sitio inesperado, '%c'",c);break;
+        }
+    } 
     push(s,z);
-    //FIXME 
 }
 
-void menor (STACK *s) {
-    trsd(s);
-    DATA a = pop(s);
-    trsd(s);
-    DATA b = pop(s);
-    make_datas(a,LONG,(int) (a.elems.DOUBLE<b.elems.DOUBLE));
-    push(s,a);
-}
-
-void maior (STACK *s) {
-    trsd(s);
-    DATA a = pop(s);
-    trsd(s);
-    DATA b = pop(s);
-    make_datas(a,LONG,(int)( a.elems.DOUBLE>b.elems.DOUBLE));
-    push(s,a);
-}
+//void igual(STACK *s) {
+//    trsd(s);
+//    DATA a = pop(s);
+//    trsd(s);
+//    DATA b = pop(s);
+//    double va = a.elems.DOUBLE;
+//    double vb = b.elems.DOUBLE;
+//    DATA z;
+//    if (va == vb) { 
+//        make_datas(z,LONG, 1);
+//    }
+//    else {
+//        make_datas(z,LONG, 0);
+//    }
+//    push(s,z);
+//    //FIXME 
+//}
+//
+//void menor (STACK *s) {
+//    trsd(s);
+//    DATA a = pop(s);
+//    trsd(s);
+//    DATA b = pop(s);
+//    make_datas(a,LONG,(int) (a.elems.DOUBLE<b.elems.DOUBLE));
+//    push(s,a);
+//}
+//
+//void maior (STACK *s) {
+//    trsd(s);
+//    DATA a = pop(s);
+//    trsd(s);
+//    DATA b = pop(s);
+//    make_datas(a,LONG,(int)( a.elems.DOUBLE>b.elems.DOUBLE));
+//    push(s,a);
+//}
 
 void nao (STACK *s) {
     trsd(s);
@@ -443,6 +453,38 @@ void emenor (STACK *s) {
     if (ta == LONG && tb == LONG)
         a.elems.LONG > b.elems.LONG ? push(s,a) : push(s,b);
 }
+
+void guardavar (STACK *s, char c, DATA ll[]) {
+    DATA a = top(s);
+    ll[c-'A'] = a;
+}
+
+void ifthenelse(STACK *s) {
+    DATA a,b,c;
+    a = pop(s);
+    b = pop(s);
+    c = pop(s);
+    if (c.elems.LONG) 
+        push(s,b);
+    else 
+        push(s,a);
+}
+
+
+void initVetor(DATA *ll) {
+    make_datas(ll[0],LONG,10);
+    make_datas(ll[1],LONG,11); 
+    make_datas(ll[2],LONG,12); 
+    make_datas(ll[3],LONG,13); 
+    make_datas(ll[4],LONG,14); 
+    make_datas(ll[5],LONG,15); 
+    make_datas(ll[13],CHAR,'\n'); 
+    make_datas(ll[18],CHAR,' ');
+    make_datas(ll[23],LONG,0); 
+    make_datas(ll[24],LONG,1); 
+    make_datas(ll[25],LONG,2); 
+}
+
 /**
  * \brief      Função que divide uma dada string usando delimitadores, separando os números dos operadores.
  *             É comparado o token com todos os possiveis operadores aritméticos, sendo chamada a função correspondente ao operador dado.
@@ -450,9 +492,10 @@ void emenor (STACK *s) {
  * @param line A linha que foi lida e à qual se irá aplicar o parse
  * @param s    Stack
  */
-
 void parse(char *line, STACK *stack) {
     char *delims = " \t\n";
+    DATA ll[26];
+    initVetor(ll);
     for(char *token = strtok(line, delims); token != NULL; token = strtok(NULL, delims)) {
         char *sobra;
         int val_i = strtol(token, &sobra, 10);
@@ -470,100 +513,36 @@ void parse(char *line, STACK *stack) {
             push(stack,k);
         }
         else if (temp) {
-            if (strchr("+-/*%#&|",*token)) {
-                aritmetica(stack,*token); 
-            }   
-            if (strchr("ABCDEFNSXYZ",*token)) {
-                constantes(stack,*token); 
+            if (strchr("+-/*^%#&|e",*token)) {
+                aritmetica(stack,token); 
             }   
             else
+            if (*token >= 'A' && *token <= 'Z') {//FIXME FALTA COISA 
+                push(stack,ll[*token-'A']);
+                //constantes(stack,*token); 
+            }
+            else
+            if (strchr("<>=",*token)) {
+                compara(stack,*token); 
+            }
+            else
             switch (*token) {
-                //case '+' :
-                //    soma(stack); break;
-                //case '-' :
-                //    sub(stack); break;
-                //case  '/':
-                //     divi(stack); break;
-                //case '*' :
-                //    mult(stack); break;
-                //case '%' :
-                //    mod(stack); break;
-                //case '#' :
-                //    expo(stack); break;
-                //case '&' :
-                //    con(stack); break;
-                //case '|' :
-                //    dis(stack); break;
-                //case '^' :
-                //    xor(stack); break;
-
-                //case 'A' :
-                //    a(stack); break;
-                //case 'B' :
-                //    b(stack); break;
-                //case 'C' :
-                //    c(stack); break;
-                //case 'D' :
-                //    d(stack); break;
-                //case 'E' :
-                //    e(stack); break;
-                //case 'F' :
-                //    f(stack); break;
-                //case 'N' :
-                //    n(stack); break;
-                //case 'S' :
-                //    s(stack); break;
-                //case 'X' :
-                //    x(stack); break;
-                //case 'Y' :
-                //    y(stack); break;
-                //case 'Z' :
-                //    z(stack); break;
-                case '(' :
-                    parA(stack); break;
-                case ')' :
-                    parF(stack); break;
-                case '~' :
-                    not(stack); break;
-                case '@' :
-                    arr(stack); break;
-                case '\\' :
-                    stop(stack); break;
-                case ';' :
-                    pop(stack); break;
-                case '_' :
-                    und(stack); break;
-                case '$' :
-                    tpi(stack); break;
-                case 'l' :
-                    lei(stack); break;
-                case 'c' :
-                    trsc(stack); break;
-                case 'i' :
-                    trsi(stack); break;
-                case 'f' :
-                    trsd(stack); break;
-
-                case '=' :
-                    igual(stack); break;
-                case '<' :
-                    menor(stack); break;
-                case '>' :
-                    maior(stack); break;
-				case '!' :
-                    nao(stack); break;
-                case 'e':
-                    switch (*(token+1)) {
-                        case '&': 
-                            ee(stack); break;
-                        case '|': break;
-                            //eou(stack); break;
-                        case '<': 
-                            emenor(stack); break;
-                        case '>': break;
-                            //emaior(stack); break;
-                    }
-                default : break;
+                case '(' : parA(stack); break;
+                case ')' : parF(stack); break;
+                case '~' : not(stack);  break;
+                case '@' : arr(stack);  break;
+                case '\\': stop(stack); break;
+                case ';' : pop(stack);  break;
+                case '_' : und(stack);  break;
+                case '$' : tpi(stack);  break;
+                case 'l' : lei(stack);  break;
+                case 'c' : trsc(stack); break;
+                case 'i' : trsi(stack); break;
+                case 'f' : trsd(stack); break;
+                case ':' : guardavar(stack,*(token+1),ll); break;
+				case '!' : nao(stack);  break;
+                case '?' : ifthenelse(stack); break;
+                default : printf("sitio inesperado fim parse '%c'", *token);break;
             }
         }
     }

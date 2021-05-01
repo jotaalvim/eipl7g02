@@ -22,18 +22,15 @@ typedef enum {LONG = 1, DOUBLE = 2, CHAR = 4, STRING = 8} TYPE;
  * \brief Define os datatypes em que um certo valor será guardado.
  */
 typedef struct data {
-  TYPE   type;
-  union {
-  long   LONG;
-  double DOUBLE;
-  char   CHAR;
-  char*  STRING;
+    TYPE   type;
+    union {
+    long   LONG;
+    double DOUBLE;
+    char   CHAR;
+    char*  STRING;
   } elems;
 } DATA;
-
- /**
- * \brief Define a constituição de uma Stack.
- */
+/** * \brief Define a constituição de uma Stack.  */ 
 typedef struct stack {
   DATA *stack;
   int size;
