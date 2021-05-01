@@ -41,10 +41,7 @@ typedef struct stack {
 } STACK;
 
 
-#define make_datas(var, TYPE, value)     \
-        var.elems.TYPE =value;           \
-        var.type       =TYPE;                      
-
+#define make_datas(var,TYPE,value)  { var.elems.TYPE =value;   var.type=TYPE; } 
 
 int has_type(DATA elem, int mask);
 

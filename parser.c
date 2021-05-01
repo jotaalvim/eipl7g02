@@ -2,121 +2,153 @@
  @file parser.c
  @brief Ficheiro com as funções relativas às operações aritméticas e ao parser.
  */
-
-
 #include "parser.h"
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 
 
-/**
- * \brief Função que soma os 2 elementos do topo da Stack.
- * @param s Stack
- */
-void soma(STACK *s) {
-    DATA p = pop(s);
-    TYPE tp = p.type;
-    DATA sg = pop(s);
-    TYPE ts = sg.type;          
-    if (tp == LONG && ts == LONG){
-        DATA z;
-        make_datas(z, LONG, p.elems.LONG + sg.elems.LONG);
-        push(s,z);}
-    else if (tp == DOUBLE && ts == LONG){
-        DATA z;
-        make_datas(z, DOUBLE, p.elems.DOUBLE + sg.elems.LONG);
-        push(s,z);}
-    else if (tp == LONG && ts == DOUBLE){
-        DATA z;
-        make_datas(z, DOUBLE, p.elems.LONG + sg.elems.DOUBLE);
-        push(s,z);}
-    else if (tp == DOUBLE && ts == DOUBLE){
-        DATA z;
-        make_datas(z, DOUBLE, p.elems.DOUBLE + sg.elems.DOUBLE);
-        push(s,z);}
+//FIXME FAZER UMA FUNÇAO ARITMÈTICA
+//ter double d1,d2
+//long d1, d2
+//e usar o que me interessa a partir dai
+void aritmetica (STACK *s, char c) {//c é o operdor
+    DATA a, da, ia, z, b, db, ib; 
+    TYPE ta, tb;
+    a = top(s); // a ori
+    ta = a.type;
+    
+    trsd(s);      
+    da = top(s); // a double
+    trsi(s);      
+    ia = top(s); // a int
+    
+    z = pop(s); 
+      
+    b = top(s); // b ori
+    tb = b.type;
+     
+    trsd(s);      
+    db = top(s); // b double
+    trsi(s);      
+    ib = top(s); // b int
+    
+    z = pop(s); 
+    double daf = da.elems.DOUBLE;
+    double dbf = db.elems.DOUBLE; 
+    int    iaf = ia.elems.LONG;
+    int    ibf = ib.elems.LONG; 
+    if (tb == DOUBLE || ta == DOUBLE ){ 
+        switch (c) {
+            case '+':
+                make_datas(z,DOUBLE,daf+dbf);
+                push(s,z); 
+                break;
+            case '-':
+                make_datas(z,DOUBLE,dbf-daf);
+                push(s,z); 
+                break;
+            case '/':
+                make_datas(z,DOUBLE,dbf/daf);
+                push(s,z); 
+                break;
+            case '*':
+                make_datas(z,DOUBLE,daf*dbf);
+                push(s,z); 
+                break;
+            case '%':
+                make_datas(z,LONG,ibf%iaf);
+                push(s,z); 
+                break;
+            case '&':
+                make_datas(z,LONG,iaf&ibf);
+                push(s,z); 
+                break;
+            case '|':
+                make_datas(z,LONG,iaf||ibf);
+                push(s,z); 
+                break;
+            case '^':
+                make_datas(z,LONG,ibf^iaf);
+                push(s,z); 
+                break;
+            case '#':
+                make_datas(z,DOUBLE,pow(dbf,daf));
+                push(s,z); 
+                break;
+        }
+    }
+    else 
+        switch (c) {
+            case '+':
+                make_datas(z,LONG,iaf+ibf);
+                push(s,z); 
+                break;
+            case '-': 
+                make_datas(z,LONG,ibf-iaf);
+                push(s,z); 
+                break;
+            case '/':
+                make_datas(z,LONG,ibf/iaf);
+                push(s,z); 
+                break;
+            case '*':
+                make_datas(z,LONG,iaf*ibf);
+                push(s,z); 
+                break;
+            case '%':
+                make_datas(z,LONG,ibf%iaf);
+                push(s,z); 
+                break;
+            case '&':
+                make_datas(z,LONG,iaf&ibf);
+                push(s,z); 
+                break;
+            case '|':
+                make_datas(z,LONG,iaf||ibf);
+                push(s,z); 
+                break;
+            case '^':
+                make_datas(z,LONG,ibf^iaf);
+                push(s,z); 
+                break;
+            case '#':
+                make_datas(z,DOUBLE,pow(dbf,daf));
+                push(s,z); 
+                break;
+    }
 }
 
-/**
- * \brief Função que subtrai os 2 primeiros elementos do topo da Stack.
- * @param s Stack
- */
-void sub(STACK *s){
-    DATA p = pop(s);
-    TYPE tp = p.type;
-    DATA sg = pop(s);
-    TYPE ts = sg.type;
-    if (tp==LONG&&ts==LONG){DATA z;
-        make_datas(z,LONG,-p.elems.LONG+sg.elems.LONG);
-        push(s,z);}
-    else if (tp==DOUBLE&&ts==LONG){
-        DATA z;
-        make_datas(z,DOUBLE,-p.elems.DOUBLE+sg.elems.LONG);
-        push(s,z);}
-    else if (tp == LONG && ts == DOUBLE){
-        DATA z;
-        make_datas(z,DOUBLE,-p.elems.LONG+sg.elems.DOUBLE);
-        push(s,z);}
-    else if (tp==DOUBLE&&ts==DOUBLE){
-        DATA z;
-        make_datas(z,DOUBLE,-p.elems.DOUBLE+sg.elems.DOUBLE);
-        push(s,z);}
+
+void constantes (STACK *s, char c) {
+    DATA z;
+    switch (c) {
+        case 'A' :
+            {make_datas(z,LONG,10)}; break;
+        case 'B' :
+            {make_datas(z,LONG,11)}; break;
+        case 'C' :
+            {make_datas(z,LONG,12)}; break;  
+        case 'D' :
+            {make_datas(z,LONG,13)}; break;
+        case 'E' :
+            {make_datas(z,LONG,14)}; break;
+        case 'F' :
+            {make_datas(z,LONG,15)}; break;
+        case 'N' :
+            {make_datas(z,CHAR,'\n')}; break;
+        case 'S' :
+            {make_datas(z,CHAR,' ')};break;
+        case 'X' :
+            {make_datas(z,LONG,0)}; break;
+        case 'Y' :
+            {make_datas(z,LONG,1)}; break;
+        case 'Z' :
+            {make_datas(z,LONG,2)}; break;
+        default : break;
+    }
+    push(s,z);
 } 
-
-
-/**
- * \brief Função que divide os 2 primeiros elementos da Stack.
- * @param s Stack
- */
-void divi(STACK *s) {
-    DATA p = pop(s);
-    TYPE tp = p.type;
-    DATA sg = pop(s);
-    TYPE ts = sg.type;
-    if (tp == LONG && ts == LONG){
-        DATA z;
-        make_datas(z, LONG, sg.elems.LONG/p.elems.LONG);
-        push(s,z);}
-    else if (tp == DOUBLE && ts == LONG){
-        DATA z;
-        make_datas(z, DOUBLE, sg.elems.LONG/p.elems.DOUBLE);
-        push(s,z);}
-    else if (tp==LONG&&ts==DOUBLE){
-        DATA z;
-        make_datas(z, DOUBLE, sg.elems.DOUBLE/p.elems.LONG);
-        push(s,z);}
-    else if (tp == DOUBLE && ts == DOUBLE){
-        DATA z;
-        make_datas(z, DOUBLE, sg.elems.DOUBLE/p.elems.DOUBLE);
-        push(s,z);}
-} 
-
-
-/**
- * \brief Função que multiplica os 2 primeiros elementos do topo da Stack.
- * @param s Stack
- */
-void mult(STACK *s) {
-    DATA p = pop(s);
-    TYPE tp = p.type;
-    DATA sg = pop(s);
-    TYPE ts = sg.type;
-    if (tp==LONG&&ts==LONG){DATA z;
-        make_datas(z,LONG,p.elems.LONG*sg.elems.LONG);
-        push(s,z);}
-    else if (tp==DOUBLE&&ts==LONG){
-        DATA z;
-        make_datas(z,DOUBLE,p.elems.DOUBLE*sg.elems.LONG);
-        push(s,z);}
-    else if (tp == LONG && ts == DOUBLE){
-        DATA z;
-        make_datas(z,DOUBLE,p.elems.LONG*sg.elems.DOUBLE);
-        push(s,z);}
-    else if (tp==DOUBLE&&ts==DOUBLE){
-        DATA z;
-        make_datas(z,DOUBLE,p.elems.DOUBLE*sg.elems.DOUBLE);
-        push(s,z);}
-}
 
 
 /**
@@ -163,84 +195,6 @@ void parF(STACK *s) {
     }
 }
 
-/**
- * \brief Função que devolve o resto da divisão inteira dos 2 primeiro elementos da Stack.
- * @param s Stack
- */
-void mod(STACK *s) {
-    DATA p = pop(s);
-    DATA z = pop(s);
-    DATA k;
-    make_datas(k,LONG,z.elems.LONG % p.elems.LONG );
-    push(s,k);
-}
-
-/**
- * \brief Função que calcula a potência dos 2 primeiros elementos do topo da Stack.
- * @param s Stack
- */
-void expo (STACK *s) {
-    DATA p = pop(s);
-    TYPE tp = p.type;
-    DATA sg = pop(s);
-    TYPE ts = sg.type;
-    if (tp==LONG&&ts==LONG){DATA z;
-        make_datas(z,LONG,pow(sg.elems.LONG,p.elems.LONG));
-        push(s,z);}
-    else if (tp==DOUBLE&&ts==LONG){
-        DATA z;
-        make_datas(z,DOUBLE,pow(sg.elems.LONG,p.elems.DOUBLE));
-        push(s,z);}
-    else if (tp == LONG && ts == DOUBLE){
-        DATA z;
-        make_datas(z,DOUBLE,pow(sg.elems.DOUBLE,p.elems.LONG));
-        push(s,z);}
-    else if (tp==DOUBLE&&ts==DOUBLE){
-        DATA z;
-        make_datas(z,DOUBLE,pow(sg.elems.DOUBLE,p.elems.DOUBLE));
-        push(s,z);}
-}
-
-/**
- * \brief Operador bitwise em que cada bit é comparado e é retornado o valor 1 quando ambos os bits forem 1 e 0 caso contrário.
- * @param s Stack
- */
-void con(STACK *s) {
-    DATA p = pop(s);
-    DATA sg = pop(s);
-    DATA z;
-    make_datas(z,LONG,p.elems.LONG & sg.elems.LONG)
-    push(s,z);
-}
-
-/**
-* \brief Operador bitwise em que cada bit é comparado e é retornado o valor 1 quando um dos bits for 1 e 0 caso contrário.
-* @param s Stack
-*/
-void dis(STACK *s) {
-    DATA p = pop(s);
-    DATA sg = pop(s);
-    DATA z;
-    make_datas(z,LONG,p.elems.LONG || sg.elems.LONG)
-    push(s,z);
-}
-
-/**
-* \brief Operador bitwise em que cada bit é comparado e é retornado o valor 1 quando os bits comparados são diferentes e 0 caso contrário.
-* @param s Stack
-*/
-void xor(STACK *s) {
-    DATA p = pop(s);
-    DATA sg = pop(s);
-    DATA z;
-    make_datas(z,LONG,p.elems.LONG ^ sg.elems.LONG)
-    push(s,z);
-}
-
-/**
-* \brief Operador bitwise em que cada bit é comparado e é retornado o valor representado em Complemento2.
-* @param s Stack
-*/
 void not(STACK *s) {
     DATA p = pop(s);
     DATA z;
@@ -281,6 +235,7 @@ void und(STACK *s) {
     DATA a = pop(s);
     push(s,a);
     push(s,a);
+    //FIXME DEVE EXISTIR UM DEEP COPY
 }
 
 
@@ -393,80 +348,54 @@ void trsd (STACK*s){
     }
 }
 
-void a(STACK *s) {
-    DATA z;
-    make_datas(z,LONG,10);
-    push(s,z);
+
+void compara(STACK *s, char c) {
+    DATA a, da, ia, z, b, db, ib; 
+    TYPE ta, tb;
+    a = top(s); // a ori
+    ta = a.type;
+    
+    trsd(s);      
+    da = top(s); // a double
+    trsi(s);      
+    ia = top(s); // a int
+    
+    z = pop(s); 
+      
+    b = top(s); // b ori
+    tb = b.type;
+     
+    trsd(s);      
+    db = top(s); // b double
+    trsi(s);      
+    ib = top(s); // b int
+    
+    if (ta == STRING && tb == STRING) {
+        switch( c ) {
+            case '=' : break;
+            case '<' : break;
+            case '>' : break;
+            case '!' : break;
+        }
+    } 
+
 }
-
-
-void b(STACK *s) {
-    DATA z;
-    make_datas(z,LONG,11);
-    push(s,z);
-}
-
-void c(STACK *s) {
-    DATA z;
-    make_datas(z,LONG,12);
-    push(s,z);
-}
-
-void d(STACK *s) {
-    DATA z;
-    make_datas(z,LONG,13);
-    push(s,z);
-}
-
-void e(STACK *s) {
-    DATA z;
-    make_datas(z,LONG,14);
-    push(s,z);
-}
-
-void f(STACK *s) {
-    DATA z;
-    make_datas(z,LONG,15);
-    push(s,z);
-}
-
-void n(STACK *s) {
-    DATA z;
-    make_datas(z,CHAR,'\n');
-    push(s,z);
-}
-
-void s(STACK *st) {
-    DATA z;
-    make_datas(z,CHAR,' ');
-    push(st,z);
-}
-
-void x(STACK *s) {
-    DATA z;
-    make_datas(z,LONG,0);
-    push(s,z);
-}
-
-void y(STACK *s) {
-    DATA z;
-    make_datas(z,LONG,1);
-    push(s,z);
-}
-
-void z(STACK *s) {
-    DATA k;
-    make_datas(k,LONG,2);
-    push(s,k);
-}
-
 void igual(STACK *s) {
     trsd(s);
     DATA a = pop(s);
     trsd(s);
     DATA b = pop(s);
-    make_datas(a,LONG,(int) a.elems.LONG==b.elems.LONG);
-    push(s,a);
+    double va = a.elems.DOUBLE;
+    double vb = b.elems.DOUBLE;
+    DATA z;
+    if (va == vb) { 
+        make_datas(z,LONG, 1);
+    }
+    else {
+        make_datas(z,LONG, 0);
+    }
+    push(s,z);
+    //FIXME 
 }
 
 void menor (STACK *s) {
@@ -494,13 +423,26 @@ void nao (STACK *s) {
     push(s,a);
 }
 
-void maior (STACK *s) {
+void ee (STACK *s) {
+    trsd(s);
     DATA a = pop(s);
+    trsd(s);
     DATA b = pop(s);
-    make_datas(a,LONG,(int)( a.elems.DOUBLE>b.elems.DOUBLE));
+    if (!b.elems.DOUBLE) {make_datas(a,DOUBLE,0);}
     push(s,a);
 }
 
+void emenor (STACK *s) {
+    DATA a = pop(s);
+    TYPE ta = a.type;
+    DATA b = pop(s);
+    TYPE tb = b.type;
+    if (ta == STRING && tb == STRING) 
+        strcmp(a.elems.STRING,b.elems.STRING) < 0 ? push(s,a) : push(s,b);
+    else 
+    if (ta == LONG && tb == LONG)
+        a.elems.LONG > b.elems.LONG ? push(s,a) : push(s,b);
+}
 /**
  * \brief      Função que divide uma dada string usando delimitadores, separando os números dos operadores.
  *             É comparado o token com todos os possiveis operadores aritméticos, sendo chamada a função correspondente ao operador dado.
@@ -508,104 +450,121 @@ void maior (STACK *s) {
  * @param line A linha que foi lida e à qual se irá aplicar o parse
  * @param s    Stack
  */
-void parse(char *line, STACK *string) {
+
+void parse(char *line, STACK *stack) {
     char *delims = " \t\n";
     for(char *token = strtok(line, delims); token != NULL; token = strtok(NULL, delims)) {
         char *sobra;
         int val_i = strtol(token, &sobra, 10);
         int temp = 1;
         if(strlen(sobra) == 0) {
-
             DATA z;
             make_datas(z,LONG,val_i);
-            push(string,z);
-
+            push(stack,z);
             temp = 0;
         }
         double val_d = strtod(token, &sobra);
         if(strlen(sobra) == 0 && temp){
-
             DATA k;
             make_datas(k, DOUBLE, val_d);
-            push(string,k);
+            push(stack,k);
         }
-        else if (temp)
+        else if (temp) {
+            if (strchr("+-/*%#&|",*token)) {
+                aritmetica(stack,*token); 
+            }   
+            if (strchr("ABCDEFNSXYZ",*token)) {
+                constantes(stack,*token); 
+            }   
+            else
             switch (*token) {
-                case '+' :
-                    soma(string); break;
-                case '-' :
-                    sub(string); break;
-                case  '/':
-                     divi(string); break;
-                case '*' :
-                    mult(string); break;
+                //case '+' :
+                //    soma(stack); break;
+                //case '-' :
+                //    sub(stack); break;
+                //case  '/':
+                //     divi(stack); break;
+                //case '*' :
+                //    mult(stack); break;
+                //case '%' :
+                //    mod(stack); break;
+                //case '#' :
+                //    expo(stack); break;
+                //case '&' :
+                //    con(stack); break;
+                //case '|' :
+                //    dis(stack); break;
+                //case '^' :
+                //    xor(stack); break;
+
+                //case 'A' :
+                //    a(stack); break;
+                //case 'B' :
+                //    b(stack); break;
+                //case 'C' :
+                //    c(stack); break;
+                //case 'D' :
+                //    d(stack); break;
+                //case 'E' :
+                //    e(stack); break;
+                //case 'F' :
+                //    f(stack); break;
+                //case 'N' :
+                //    n(stack); break;
+                //case 'S' :
+                //    s(stack); break;
+                //case 'X' :
+                //    x(stack); break;
+                //case 'Y' :
+                //    y(stack); break;
+                //case 'Z' :
+                //    z(stack); break;
                 case '(' :
-                    parA(string); break;
+                    parA(stack); break;
                 case ')' :
-                    parF(string); break;
-                case '%' :
-                    mod(string); break;
-                case '#' :
-                    expo(string); break;
-                case '&' :
-                    con(string); break;
-                case '|' :
-                    dis(string); break;
-                case '^' :
-                    xor(string); break;
+                    parF(stack); break;
                 case '~' :
-                    not(string); break;
+                    not(stack); break;
                 case '@' :
-                    arr(string); break;
+                    arr(stack); break;
                 case '\\' :
-                    stop(string); break;
+                    stop(stack); break;
                 case ';' :
-                    pop(string); break;
+                    pop(stack); break;
                 case '_' :
-                    und(string); break;
+                    und(stack); break;
                 case '$' :
-                    tpi(string); break;
+                    tpi(stack); break;
                 case 'l' :
-                    lei(string); break;
+                    lei(stack); break;
                 case 'c' :
-                    trsc(string); break;
+                    trsc(stack); break;
                 case 'i' :
-                    trsi(string); break;
+                    trsi(stack); break;
                 case 'f' :
-                    trsd(string); break;
-                
-                case 'A' :
-                    a(string); break;
-                case 'B' :
-                    b(string); break;
-                case 'C' :
-                    c(string); break;
-                case 'D' :
-                    d(string); break;
-                case 'E' :
-                    e(string); break;
-                case 'F' :
-                    f(string); break;
-                case 'N' :
-                    n(string); break;
-                case 'S' :
-                    s(string); break;
-                case 'X' :
-                    x(string); break;
-                case 'Y' :
-                    y(string); break;
-                case 'Z' :
-                    z(string); break;
-                
+                    trsd(stack); break;
+
                 case '=' :
-                    igual(string); break;
+                    igual(stack); break;
                 case '<' :
-                    menor(string); break;
+                    menor(stack); break;
                 case '>' :
-                    maior(string); break;
+                    maior(stack); break;
 				case '!' :
-                    nao(string); break;
+                    nao(stack); break;
+                case 'e':
+                    switch (*(token+1)) {
+                        case '&': 
+                            ee(stack); break;
+                        case '|': break;
+                            //eou(stack); break;
+                        case '<': 
+                            emenor(stack); break;
+                        case '>': break;
+                            //emaior(stack); break;
+                    }
                 default : break;
             }
+        }
     }
 }

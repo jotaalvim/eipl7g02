@@ -17,25 +17,25 @@
  * \brief   Função que soma os 2 elementos do topo da Stack.
  * @param s Stack
  */
-void soma(STACK *s);
+//void soma(STACK *s);
 
 /**
  * \brief   Função que subtrai o elemento do topo da Stack ao elemento a seguir.
  * @param s Stack
  */
-void sub(STACK *s);
+//void sub(STACK *s);
 
 /**
  * \brief   Função que permite multiplicar os 2 primeiros elementos do topo da Stack.
  * @param s Stack
  */
-void mult(STACK *s);
+//void mult(STACK *s);
 
 /**s
  * \brief   Função que divide o 2º elemento do topo da Stack pelo elemento do topo da Stack.
  * @param s Stack
  */
-void divi(STACK *s);
+//void divi(STACK *s);
 
 /**
  * \brief   Função que decrementa 1 valor ao elemento do topo da Stack.
@@ -54,13 +54,13 @@ void parF(STACK *s);
  * \brief   Função do resto da divisão inteira do 2º elemento pelo 1º elemento do topo da Stack.
  * @param s Stack
  */
-void mod(STACK *s);
+//void mod(STACK *s);
 
 /**
  * \brief   Função que calcula a potência que tem como base o elemento do topo da Stack e como expoente o elemento a seguir.
  * @param s Stack
  */
-void expo (STACK *s);
+//void expo (STACK *s);
 
 /**
  * \brief   Operador bitwise onde cada bit é comparado e é retornado o valor 1 quando ambos os bits forem 1 e 0 caso contrário.
@@ -68,7 +68,7 @@ void expo (STACK *s);
 
  * @param s Stack
  */
-void con(STACK *s);
+//void con(STACK *s);
 
 /**
  * \brief   Operador bitwise onde cada bit é comparado e é retornado o valor 1 quando um dos bits for 1 e 0 caso contrário.
@@ -76,13 +76,13 @@ void con(STACK *s);
 
  * @param s Stack
  */ 
-void dis(STACK *s);
+//void dis(STACK *s);
 
 /**
  * \brief   Operador bitwise onde cada bit é comparado e é retornado o valor 1 quando os bits comparados forem diferentes e 0 caso contrário.
  * @param s Stack
  */
-void xor(STACK *s);
+//void xor(STACK *s);
 
 /**
  * \brief   Operador bitwise onde cada bit é comparado que retorna o valor representado em Complemento2.
