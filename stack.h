@@ -13,7 +13,12 @@
 /**
  * \brief Define os diferentes tipos que um elemento da Stack poderá assumir.
  */
-typedef enum {LONG = 1, DOUBLE = 2, CHAR = 4, STRING = 8} TYPE;
+typedef enum {
+  LONG = 1, /**< Define o tipo LONG */
+  DOUBLE = 2, /**< Define o tipo DOUBLE */
+  CHAR = 4, /**< Define o tipo CHAR */
+  STRING = 8 /**< Define o tipo STRING */
+} TYPE;
 
 
 /**
@@ -30,21 +35,22 @@ typedef enum {LONG = 1, DOUBLE = 2, CHAR = 4, STRING = 8} TYPE;
  * \brief Define os datatypes em que um certo valor será guardado.
  */
 typedef struct data {
-    TYPE   type;
+    TYPE   type; /**< Define o tipo da struct data */
+/// @brief Contém as varáveis em que um certo valor será guardado.
     union {
-    long   LONG;
-    double DOUBLE;
-    char   CHAR;
-    char*  STRING;
-  } elems;
+    long   LONG; /**< Contém a variável do tipo long */
+    double DOUBLE; /**< Contém a variável do tipo double */
+    char   CHAR; /**< Contém a variável do tipo char */
+    char*  STRING; /**< Contém a variável do tipo string */
+  } elems; /**< Define o tipo dos elementos que contêm a STACK*/
 } DATA;
 /** 
 *\brief Define a constituição de uma Stack.  
 */ 
 typedef struct stack {
-  DATA *stack;
-  int size;
-  int n_elems;
+  DATA *stack; /**< Define a STACK*/
+  int size; /**< Define o tamanho da STACK */
+  int n_elems; /**< Define o número de elementos da STACK */
 } STACK;
 
 
