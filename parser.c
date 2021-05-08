@@ -562,7 +562,11 @@ void parse(char *line, STACK *stack) {
 }
 
 
-
+/**
+ * \brief Função que separa um token do resto da linha, devolvendo os dois.     
+ * @param line A linha quer será lida
+ * @param rest O resto da linha após ser separada do token   
+ */
 char *get_token3(char *line, char **rest) { //**rest é um apontador para uma string
     char *delims = " \t\n";
     int i = 0;
@@ -584,18 +588,18 @@ char *get_token3(char *line, char **rest) { //**rest é um apontador para uma st
 }
 
 
-char *get_token2(char *line, char **rest) { //**rest é um apontador para uma string
-    char *delims = " \t\n\0";
-    char *ini = line;
-    if (!*line) return NULL;//*line == '\0'
-    while ( !strchr(delims,*line) )  line ++; // strchr(delims,*line) == NULL
-    //printf("%d\n",*line);
-    *rest = (*line == '\0') ? NULL : line+1;
-    *line = '\0';
-    //if (*line == '\0')  *rest = NULL;
-    //else  *rest = line +1;
-    return ini;
-}
+//char *get_token2(char *line, char **rest) { //**rest é um apontador para uma string
+//    char *delims = " \t\n\0";
+//    char *ini = line;
+//    if (!*line) return NULL;//*line == '\0'
+//    while ( !strchr(delims,*line) )  line ++; // strchr(delims,*line) == NULL
+//    //printf("%d\n",*line);
+//    *rest = (*line == '\0') ? NULL : line+1;
+//    *line = '\0';
+//    //if (*line == '\0')  *rest = NULL;
+//    //else  *rest = line +1;
+//    return ini;
+//}
 
 
 //char *get_token(char **rest) { //**rest é um apontador para uma string
