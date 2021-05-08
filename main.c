@@ -17,10 +17,10 @@
  * @returns 0  
  */
 int main (void) {
-    char linha[] = "123 abc bananas";
-    printf("%s\n",linha);
+    //char linha[] = "123 abc bananas";
+    //printf("%s\n",linha);
 
-    char **rest;
+    //char **rest;
 
     //*rest = linha;
 
@@ -32,8 +32,7 @@ int main (void) {
     //}
     //char *token;
     //for ( token = get_token(rest); token != NULL; token = get_token(rest)) {
-    //    printf("token : %s\n",token);
-    //    printf("resto : %s\n",*rest);
+    //    printf("token : %s\n",token); //    printf("resto : %s\n",*rest);
     //}
 
     //x = get_token2(linha, &rest);
@@ -51,10 +50,10 @@ int main (void) {
     //printf("token : %s\n",x);
     //printf("resto : %s\n",rest);
     
-    char line[10240];
     STACK *s;
     s = create_stack();
-    assert(fgets(line, 10240, stdin) != NULL) ;
+    char line[10240];
+    assert(fgets(line, 10240, stdin) != NULL);
     assert(line[strlen(line) - 1] == '\n');
     parse(line, s);
     print_stack(s);

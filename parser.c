@@ -217,7 +217,7 @@ void tpi (STACK *s) {
 
 
 /**
-* \brief Função que lê uma linha.
+* \brief Função que lê uma line.
 * @param s Stack
 */
 void lei (STACK*s){
@@ -425,7 +425,7 @@ void initVetor(DATA *ll) {
  * \brief      Função que divide uma dada string usando delimitadores, separando os números dos operadores.
  *             É comparado o token com todos os possiveis operadores aritméticos, sendo chamada a função correspondente ao operador dado.
  *
- * @param line A linha que foi lida e à qual se irá aplicar o parse
+ * @param line A line que foi lida e à qual se irá aplicar o parse
  * @param s    Stack
  */
 //
@@ -479,25 +479,43 @@ void parse2(char *line, STACK *stack) {
     }
 }
 
-
 void parse(char *line, STACK *stack) {
-    char *delims = " \t\n";
+    //char *delims = " \t\n";
     DATA ll[26];
     initVetor(ll);
+    char *rest[strlen(line)+1];
+    *rest = (char*) malloc (sizeof(char) * strlen(line));
     
-    char **rest;
-    rest = (char*) malloc (sizeof(char) * 50);
+    char *token;// = (char*) malloc (sizeof(char) * strlen(line));
 
-    char *token;
-    for ( token = get_token2(line, rest); token != NULL; token = get_token2(line,rest)) {
-        printf("token : %s\n",token);
-        printf("resto : %s\n",*rest);
-        if(*token =='\"') {
-         
+
+    
+    for ( token = get_token3(line, rest); token != NULL; token = get_token3(line,rest)) {
+        //while ( strchr(delims,*line) != NULL && *line != '\0') line ++;
+
+        if(*token =='"') {//por numa função getdelimited
+            char * ini = token+1;
+            for (token++; *token != '"'; token++) {
+                if (*token == '\0') *token = ' ';
+            }
+            *token = '\0';
+            *rest = token+1;
+            token = line+1;
+            //char *valor = strdup(token);
+            
+            //printf("%s\n",*rest);
+            DATA z;
+            make_datas(z,STRING,ini);
+            push(stack,z);
+
+        }
+        else
+        if(*token =='[') {
+            //int contador = 1;
         }
         else {
             char *sobra;
-            int val_i = strtol(token, &sobra, 10);// "20" -> 20; "20mesa" -> 20 , sobra = "mesa" 
+            int val_i = strtol(token, &sobra, 10);// "20"-> 20; "20mesa" -> 20 , sobra = "mesa" 
             int temp = 1;//
             if(strlen(sobra) == 0) {
                 DATA z;
@@ -529,7 +547,7 @@ void parse(char *line, STACK *stack) {
                     case '_' : und(stack);  break;
                     case '$' : tpi(stack);  break;
                     case 'l' : lei(stack);  break;
-                    case 'c' : trsc(stack); break;
+                   case 'c' : trsc(stack); break;
                     case 'i' : trsi(stack); break;
                     case 'f' : trsd(stack); break;
                     case ':' : guardavar(stack,*(token+1),ll); break;
@@ -538,50 +556,55 @@ void parse(char *line, STACK *stack) {
                     default : printf("sitio inesperado fim parse '%c'", *token);break;
                 }
             }
-        strcpy(line,*rest);
         }
+        strcpy(line,*rest);
     }
 }
 
-//char *get_delimited(char *line, char *seps, char **rest){
-//    int c = 0; 
-//    int *ini = line++; 
-//    if (*seps == "\"") {
-//        for(line++; *line != *seps; line++);//line aponta para → "
-//        *line = '\0';
-//        line++;// está no reto
-//        *rest = line;
-//        return ini;
-//    }
-//    
-//    if (*seps == "[" ) { // tenho que passar para a função EVAL  
-//}
-/*
-    "2 3 +"  → "2" resto: "3 +"
+
+
+char *get_token3(char *line, char **rest) { //**rest é um apontador para uma string
+    char *delims = " \t\n";
+    int i = 0;
+    //while ( strchr(delims,*line) != NULL && *line != '\0') {
+    //    line ++;
+    //}
+    //if ( strlen(line) == 0 ) {
+    //    return NULL;
+    //}
+    if (*line == '\0') return NULL;
+    char *token;
+    token = strdup(line);
+    while ( strchr(delims,token[i]) == NULL) i++;
     
-    "2 3 +\n" 
-    linha = resto: "3 +"
-*/
+    token[i] = '\0';
+    *rest = line+i+1; 
+    //line = token;
+    return token;
+}
 
 
 char *get_token2(char *line, char **rest) { //**rest é um apontador para uma string
     char *delims = " \t\n\0";
     char *ini = line;
     if (!*line) return NULL;//*line == '\0'
-    while ( !strchr(delims,*line) ) line ++; // strchr(delims,*line) == NULL
-    *rest = (*line == '\0') ? "" : line+1;
-    *line = '\0';
-    return ini;
-}
-
-
-char *get_token(char **rest) { //**rest é um apontador para uma string
-    char *line = *rest;
-    char *delims = " \t\n\0";
-    char *ini = line;
-    if (!*line) return NULL;
-    while ( strchr(delims,*line) == NULL ) line ++;
+    while ( !strchr(delims,*line) )  line ++; // strchr(delims,*line) == NULL
+    //printf("%d\n",*line);
     *rest = (*line == '\0') ? NULL : line+1;
     *line = '\0';
+    //if (*line == '\0')  *rest = NULL;
+    //else  *rest = line +1;
     return ini;
 }
+
+
+//char *get_token(char **rest) { //**rest é um apontador para uma string
+//    char *line = *rest;
+//    char *delims = " \t\n\0";
+//    char *ini = line;
+//    if (!*line) return NULL;
+//    while ( strchr(delims,*line) == NULL line ++;
+//    *rest = (*line == '\0') ? NULL : line+1;
+//    *line = '\0';
+//    return ini;
+//}

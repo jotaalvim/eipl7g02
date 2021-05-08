@@ -95,6 +95,7 @@ void trsd (STACK*s);
  */
 void parse(char *line, STACK *s);
 
+char *get_token3(char *line, char **rest);
 char *get_token2(char *line, char **rest);
 char *get_token(char **rest);
 
