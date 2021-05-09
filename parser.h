@@ -103,8 +103,14 @@ STACK *parse(char *line, STACK *s);
  * @param rest O resto da linha após ser separada do token   
  */
 char *get_token3(char *line, char **rest);
-char *get_token2(char *line, char **rest);
+//char *get_token2(char *line, char **rest);
 //char *get_token(char **rest);
+
+/** 
+ * \brief Função que dado algo delimitado por [] ou "", devolve o conteúdo dentro das delimitações.   
+ * @param line A linha que será lida
+ * @param rest O resto da linha  
+ */
 char *get_delimited(char *line, char **rest);
 
 #endif
