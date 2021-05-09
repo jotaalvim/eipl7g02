@@ -592,6 +592,11 @@ STACK *parse(char *line, STACK *stack) {
     return stack;
 }
 
+/** FIXME
+ * \brief Função que separa um token do resto da linha, devolvendo os dois.     
+ * @param line A linha quer será lida
+ * @param rest O resto da linha após ser separada do token   
+ */
 char *get_token3(char *line, char **rest) { //**rest é um apontador para uma string
     char *delims = " \t\n";
     int i = 0;
@@ -624,6 +629,7 @@ char *get_token2(char *line, char **rest) { //**rest é um apontador para uma st
     //else  *rest = line +1;
     return ini;
 }
+
 //char *get_token(char **rest) { //**rest é um apontador para uma string
 //    char *line = *rest;
 //    char *delims = " \t\n\0";

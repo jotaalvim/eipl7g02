@@ -96,9 +96,15 @@ void trsd (STACK*s);
 //void parse(char *line, STACK *s);
 STACK *parse(char *line, STACK *s);
 
+
+/**
+ * \brief Função que separa um token do resto da linha, devolvendo os dois.     
+ * @param line A linha quer será lida
+ * @param rest O resto da linha após ser separada do token   
+ */
 char *get_token3(char *line, char **rest);
 char *get_token2(char *line, char **rest);
-char *get_token(char **rest);
+//char *get_token(char **rest);
 char *get_delimited(char *line, char **rest);
 
 #endif
