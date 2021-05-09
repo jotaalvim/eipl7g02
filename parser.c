@@ -37,8 +37,32 @@ void aritmetica (STACK *s, char *c) {//c é o operdor
     z = pop(s); 
     double daf = da.elems.DOUBLE, dbf = db.elems.DOUBLE,x2; 
     int    iaf = ia.elems.LONG,   ibf = ib.elems.LONG, x ; 
+    char   *x3, *saf, *sbf; 
+    if (tb == STRING || ta == STRING ){
+        switch(*c) {
+            case 'e':
+                switch (*(c+1)) {
+                    case '<':
+                        saf = a.elems.STRING;
+                        sbf = b.elems.STRING;
+                        x3 = strcmp(saf, sbf) > 0 ? sbf : saf;
+                        make_datas(z,STRING,x3); break;
+                    case '>':
+                        saf = a.elems.STRING;
+                        sbf = b.elems.STRING;
+                        x3 = strcmp(saf, sbf) < 0 ? sbf : saf;
+                        make_datas(z,STRING,x3); break;
+                    default : printf("sitio inesperado, '%c'",*c);break;
+                }break;
+            case '+':
+                saf = a.elems.STRING;
+                sbf = b.elems.STRING;
+                make_datas(z,STRING,strcat(sbf,saf));
+        }
+    }
+    else
     if (tb == DOUBLE || ta == DOUBLE ){ 
-        switch (*c) {
+        switch(*c) {
             case '+': make_datas(z,DOUBLE,daf+dbf);break;
             case '-': make_datas(z,DOUBLE,dbf-daf);break;
             case '/': make_datas(z,DOUBLE,dbf/daf);break;
@@ -217,12 +241,15 @@ void tpi (STACK *s) {
 
 
 /**
-* \brief Função que lê uma line.
+* \brief Função que lê uma linha.
 * @param s Stack
 */
-void lei (STACK*s){
+void lei (STACK *s){
     char x[256];
-    assert(scanf("\n%100[^\n]", x) == 1);
+    //assert(scanf("\n%100[^\n]", x) == 1);
+    assert(fgets(x,256, stdin) != NULL );
+    //x [strlen(x)-1]= '\0';
+    //printf("%s\n",x);
     DATA z;
     make_datas(z,STRING,x)
     push(s,z);
@@ -258,23 +285,18 @@ void trsi (STACK*s){
     DATA a = pop(s);
     TYPE ta= a.type;
     if (ta == LONG) {
-        DATA z;
-        make_datas(z,LONG,a.elems.LONG);
-        push(s,z);}
+        make_datas(a,LONG,a.elems.LONG);
+        push(s,a);}
     else if (ta == DOUBLE) {
-        DATA k;
-        make_datas(k,LONG,(int) a.elems.DOUBLE);
-        push(s,k);}
+        make_datas(a,LONG,(int) a.elems.DOUBLE);
+        push(s,a);}
     else if (ta == CHAR) {
-        DATA q;
-        make_datas(q,LONG,(int) a.elems.CHAR);
-        push(s,q);
-    }
+        make_datas(a,LONG,(int) a.elems.CHAR);
+        push(s,a); }
     else if (ta == STRING) {
-        DATA q;
-        make_datas(q,LONG,atoi(a.elems.STRING));
-        push(s,q);
-    }
+        char *sobra;
+        make_datas(a,LONG, strtol(a.elems.STRING,&sobra,10));
+        push(s,a); }
 }
 
 /**
@@ -341,10 +363,10 @@ void compara(STACK *s, char c) {
                 x = strcmp(a.elems.STRING,b.elems.STRING) == 0 ? 1: 0;
                 make_datas(z,LONG,x); break;
             case '<' : 
-                x = strcmp(a.elems.STRING,b.elems.STRING) < 0 ? 1: 0;
+                x = strcmp(a.elems.STRING,b.elems.STRING) < 0 ? 0: 1;
                 make_datas(z,LONG,x); break;
             case '>' : 
-                x = strcmp(a.elems.STRING,b.elems.STRING) > 0 ? 1: 0;
+                x = strcmp(a.elems.STRING,b.elems.STRING) > 0 ? 0: 1;
                 make_datas(z,LONG,x); break;
             default : printf("sitio inesperado, '%c'",c);break;
         }
@@ -479,7 +501,7 @@ void parse2(char *line, STACK *stack) {
     }
 }
 
-void parse(char *line, STACK *stack) {
+STACK *parse(char *line, STACK *stack) {
     //char *delims = " \t\n";
     DATA ll[26];
     initVetor(ll);
@@ -488,30 +510,38 @@ void parse(char *line, STACK *stack) {
     
     char *token;// = (char*) malloc (sizeof(char) * strlen(line));
 
-
-    
     for ( token = get_token3(line, rest); token != NULL; token = get_token3(line,rest)) {
         //while ( strchr(delims,*line) != NULL && *line != '\0') line ++;
-
         if(*token =='"') {//por numa função getdelimited
             char * ini = token+1;
             for (token++; *token != '"'; token++) {
                 if (*token == '\0') *token = ' ';
             }
+            if (*token != '\0') *rest = token+2;
+            else *rest = token;
             *token = '\0';
-            *rest = token+1;
-            token = line+1;
-            //char *valor = strdup(token);
-            
-            //printf("%s\n",*rest);
+            //token = line+1;
+            token = ini;
             DATA z;
-            make_datas(z,STRING,ini);
+            {make_datas(z,STRING,ini);}
             push(stack,z);
-
+            //printf("token: %s\n", token);
+            //printf("  ini: %s\n", ini );
+            //printf(" rest: %s\n", *rest);
         }
         else
+
         if(*token =='[') {
-            //int contador = 1;
+            token = get_delimited(line, rest);
+            //printf("token: %s\n",token);
+            //printf(" rest: '%s'\n",*rest);
+            STACK *s2;
+            s2 = create_stack();
+            s2 = parse(token,s2);
+            //printf(" rest: '%s'\n",*rest);
+            DATA k;
+            make_datas(k,ARRAY,s2);
+            push(stack,k); 
         }
         else {
             char *sobra;
@@ -547,7 +577,7 @@ void parse(char *line, STACK *stack) {
                     case '_' : und(stack);  break;
                     case '$' : tpi(stack);  break;
                     case 'l' : lei(stack);  break;
-                   case 'c' : trsc(stack); break;
+                    case 'c' : trsc(stack); break;
                     case 'i' : trsi(stack); break;
                     case 'f' : trsd(stack); break;
                     case ':' : guardavar(stack,*(token+1),ll); break;
@@ -559,16 +589,15 @@ void parse(char *line, STACK *stack) {
         }
         strcpy(line,*rest);
     }
+    return stack;
 }
-
-
 
 char *get_token3(char *line, char **rest) { //**rest é um apontador para uma string
     char *delims = " \t\n";
     int i = 0;
-    //while ( strchr(delims,*line) != NULL && *line != '\0') {
-    //    line ++;
-    //}
+    while ( strchr(delims,*line) != NULL && *line != '\0') {
+        line ++;
+    }
     //if ( strlen(line) == 0 ) {
     //    return NULL;
     //}
@@ -576,7 +605,6 @@ char *get_token3(char *line, char **rest) { //**rest é um apontador para uma st
     char *token;
     token = strdup(line);
     while ( strchr(delims,token[i]) == NULL) i++;
-    
     token[i] = '\0';
     *rest = line+i+1; 
     //line = token;
@@ -596,8 +624,6 @@ char *get_token2(char *line, char **rest) { //**rest é um apontador para uma st
     //else  *rest = line +1;
     return ini;
 }
-
-
 //char *get_token(char **rest) { //**rest é um apontador para uma string
 //    char *line = *rest;
 //    char *delims = " \t\n\0";
@@ -608,3 +634,17 @@ char *get_token2(char *line, char **rest) { //**rest é um apontador para uma st
 //    *line = '\0';
 //    return ini;
 //}
+
+char *get_delimited(char *line, char **rest) {//só para arrays
+    int c, i=0;
+    char *ini = strdup(line+2);
+    for (c = 1; c != 0; i++) {
+        if ( ini[i]  == '[' ) c++;
+        if ( ini[i]  == ']' ) c--;
+    }
+    *rest = (ini[i] == '\0') ? "" : line+i+2;
+    ini[i-1] = '\0';
+   // ini[i-2] = '\0';
+//    printf("%s",*rest);
+    return ini;
+}

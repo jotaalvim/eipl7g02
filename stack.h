@@ -17,7 +17,8 @@ typedef enum {
   LONG = 1, /**< Define o tipo LONG */
   DOUBLE = 2, /**< Define o tipo DOUBLE */
   CHAR = 4, /**< Define o tipo CHAR */
-  STRING = 8 /**< Define o tipo STRING */
+  STRING = 8, /**< Define o tipo STRING */
+  ARRAY = 16
 } TYPE;
 
 
@@ -42,6 +43,7 @@ typedef struct data {
     double DOUBLE; /**< Contém a variável do tipo double */
     char   CHAR; /**< Contém a variável do tipo char */
     char*  STRING; /**< Contém a variável do tipo string */
+    struct stack *ARRAY;
   } elems; /**< Define o tipo dos elementos que contêm a STACK*/
 } DATA;
 /** 

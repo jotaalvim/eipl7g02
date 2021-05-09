@@ -93,10 +93,12 @@ void trsd (STACK*s);
  * @param line A linha que foi lida e à qual se irá aplicar o parse
  * @param s    Stack
  */
-void parse(char *line, STACK *s);
+//void parse(char *line, STACK *s);
+STACK *parse(char *line, STACK *s);
 
 char *get_token3(char *line, char **rest);
 char *get_token2(char *line, char **rest);
 char *get_token(char **rest);
+char *get_delimited(char *line, char **rest);
 
 #endif

@@ -93,17 +93,18 @@ int is_empty(STACK *s) {
  */
 
 void print_stack(STACK *s) {
-  for(int K = 0; K < s->n_elems; K++) {
-    DATA elem = s->stack[K];
-    TYPE type = elem.type;
-    switch(type) {
-      case LONG:   printf("%ld", elem.elems.LONG  ); break;
-      case DOUBLE: printf("%g" , elem.elems.DOUBLE); break;
-      case CHAR:   printf("%c" , elem.elems.CHAR  ); break;
-      case STRING: printf("%s" , elem.elems.STRING); break;
+    for(int K = 0; K < s->n_elems; K++) {
+        DATA elem = s->stack[K];
+        TYPE type = elem.type;
+        switch(type) {
+            case LONG:   printf("%ld", elem.elems.LONG  ); break;
+            case DOUBLE: printf("%g" , elem.elems.DOUBLE); break;
+            case CHAR:   printf("%c" , elem.elems.CHAR  ); break;
+            case STRING: printf("%s" , elem.elems.STRING); break;
+            case ARRAY:  print_stack(  elem.elems.ARRAY ); break;
+        }
     }
-  }
-  printf("\n");                               
+  //printf("\n");                               
 }
 
 
