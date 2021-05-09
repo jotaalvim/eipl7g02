@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "stack.h"
-//#include "parser.c"
+
 #include "parser.h"
 
 #include <stdlib.h>
