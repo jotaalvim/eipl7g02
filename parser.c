@@ -656,7 +656,7 @@ STACK *parse(char *line, STACK *stack, DATA ll[]) {
                     {make_datas(k, LONG, strtol(token,&sobra,10))};
                     push(stack,k);
                 }
-                if (strchr("+/*^%#&|e",*token))  aritmetica(stack,token); 
+                if (strchr("+-/*^%#&|e",*token))  aritmetica(stack,token); 
                 else
                 if (strchr("<>=",*token)) compara(stack,*token); 
                 else
