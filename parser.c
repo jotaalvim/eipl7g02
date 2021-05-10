@@ -551,18 +551,18 @@ char *get_token3(char *line, char **rest) { //**rest é um apontador para uma st
 }
 
 
-char *get_token2(char *line, char **rest) { //**rest é um apontador para uma string
-    char *delims = " \t\n\0";
-    char *ini = line;
-    if (!*line) return NULL;//*line == '\0'
-    while ( !strchr(delims,*line) )  line ++; // strchr(delims,*line) == NULL
-    //printf("%d\n",*line);
-    *rest = (*line == '\0') ? NULL : line+1;
-    *line = '\0';
-    //if (*line == '\0')  *rest = NULL;
-    //else  *rest = line +1;
-    return ini;
-}
+//char *get_token2(char *line, char **rest) { //**rest é um apontador para uma string
+//    char *delims = " \t\n\0";
+//    char *ini = line;
+//    if (!*line) return NULL;//*line == '\0'
+//    while ( !strchr(delims,*line) )  line ++; // strchr(delims,*line) == NULL
+//    //printf("%d\n",*line);
+//    *rest = (*line == '\0') ? NULL : line+1;
+//    *line = '\0';
+//    //if (*line == '\0')  *rest = NULL;
+//    //else  *rest = line +1;
+//    return ini;
+//}
 //char *get_token(char **rest) { //**rest é um apontador para uma string
 //    char *line = *rest;
 //    char *delims = " \t\n\0";
@@ -573,6 +573,12 @@ char *get_token2(char *line, char **rest) { //**rest é um apontador para uma st
 //    *line = '\0';
 //    return ini;
 //}
+
+/** 
+ * \brief Função que dado algo delimitado por [] ou "", devolve o conteúdo dentro das delimitações.   
+ * @param line A linha que será lida
+ * @param rest O resto da linha  
+ */
 char *get_delimited(char *line, char **rest) {//só para arrays
     int c, i=0;
     char *ini = strdup(line+2);
@@ -586,13 +592,13 @@ char *get_delimited(char *line, char **rest) {//só para arrays
 //    printf("%s",*rest);
     return ini;
 }
+
 STACK *parse(char *line, STACK *stack, DATA ll[]) {
     //char *delims = " \t\n";
     char *rest[strlen(line)+1];
     *rest = (char*) malloc (sizeof(char) * strlen(line));
     
     char *token;// = (char*) malloc (sizeof(char) * strlen(line));
-
     for ( token = get_token3(line, rest); token != NULL; token = get_token3(line,rest)) {
         //while ( strchr(delims,*line) != NULL && *line != '\0') line ++;
         if(*token =='"') {//por numa função getdelimited
@@ -614,7 +620,6 @@ STACK *parse(char *line, STACK *stack, DATA ll[]) {
             //printf(" rest: %s\n", *rest);
         }
         else
-
         if(*token =='[') {
             token = get_delimited(line, rest);
             //printf("token: %s\n",token);
