@@ -17,12 +17,15 @@
  * @returns 0  
  */
 int main (void) {
+    DATA ll[26];
+    initVetor(ll);
+
     STACK *s;
     s = create_stack();
     char line[10240];
     assert(fgets(line, 10240, stdin) != NULL);
     assert(line[strlen(line) - 1] == '\n');
-    s = parse(line, s);
+    s = parse(line, s, ll);
     print_stack(s);
     printf("\n");
     return 0;
