@@ -40,6 +40,7 @@ void aritmetica (STACK *s, char *c) {//c é o operdor
     int    iaf = ia.elems.LONG,   ibf = ib.elems.LONG, x ; 
     char   *x3, *saf, *sbf; 
     if (tb == ARRAY  || ta == ARRAY) {
+
     }
     if (tb == STRING || ta == STRING ){
         switch(*c) {
@@ -56,7 +57,7 @@ void aritmetica (STACK *s, char *c) {//c é o operdor
                         x3 = strcmp(saf, sbf) < 0 ? sbf : saf;
                         make_datas(z,STRING,x3); break;
                     default : printf("sitio inesperado, '%c'",*c);break;
-                }break;
+                } break;
             case '+':
 
                 // "ola" 'b'
@@ -78,7 +79,28 @@ void aritmetica (STACK *s, char *c) {//c é o operdor
                     int t = asprintf(&f ,"%s%s", b.elems.STRING, a.elems.STRING);
                     t++;
                     make_datas(z,STRING,f); 
+                } break;
+            case '*':
+                if (tb == LONG) {
+                    char *f = malloc (sizeof(char)* strlen(a.elems.STRING) * b.elems.LONG +1);
+                    f[0] = '\0';
+                    for ( int i = 0; b.elems.LONG > i ; i++) {
+                       strcat( f, a.elems.STRING);
+                    }
+                    //f [strlen(a.elems.STRING) * b.elems.LONG] = '\0';
+                    //printf("%s",f);
+                    make_datas(z,STRING,f); 
                 }
+                if (ta == LONG) {
+                    char *f = malloc (sizeof(char)* strlen(b.elems.STRING) * a.elems.LONG +1);
+                    for ( int i = 0; a.elems.LONG > i ; i++) {
+                       strcat(f, b.elems.STRING);
+                    }
+                    //f [strlen(b.elems.STRING) * a.elems.LONG] = '\0';
+                    //printf("%s",f);
+                    make_datas(z,STRING,f); 
+                } break;
+                break;
         }
     }
     else
@@ -383,6 +405,15 @@ void compara(STACK *s, char c) {
         switch( c ) {
             case '=' : 
                 make_datas(z,CHAR,  b.elems.STRING [a.elems.LONG]  ); break;
+            case '<':
+                if (tb == LONG) {
+                    //printf("%s\n", a.elems.STRING);
+                    a.elems.STRING += b.elems.LONG-1;
+                    make_datas(z,STRING,a.elems.STRING);
+                } break;
+            case '>':
+               break;
+
         }
     } 
     else {
