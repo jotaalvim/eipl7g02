@@ -396,10 +396,15 @@ void initVetor(DATA *ll) {
 void vir(STACK *s) {
     DATA a = pop(s);
     TYPE ta = a.type;
-    if (ta == ARRAY){
-        make_datas(a,LONG, a.elems.ARRAY->n_elems );       
-    } //FIXME 
-    if (ta == STRING) make_datas(a,LONG,strlen(a.elems.STRING));
+    switch (ta) {
+        case ARRAY: make_datas(a,LONG, a.elems.ARRAY->n_elems ); break;
+        case STRING:make_datas(a,LONG,strlen(a.elems.STRING)); break;
+        default: break;
+    }
+    //if (ta == ARRAY){
+    //    make_datas(a,LONG, a.elems.ARRAY->n_elems );       
+    //} //FIXME 
+    //if (ta == STRING) make_datas(a,LONG,strlen(a.elems.STRING));
 
     push(s,a);
 }
@@ -453,7 +458,7 @@ char *get_token3(char *line, char **rest) { //**rest é um apontador para uma st
 //}
 
 /** 
- * \brief Função que dado algo delimitado por [] ou "", devolve o conteúdo dentro das delimitações.   
+ * \brief Função que dado algo delimitado por [], devolve o conteúdo dentro das delimitações.   
  * @param line A linha que será lida
  * @param rest O resto da linha  
  */
@@ -471,6 +476,24 @@ char *get_delimited(char *line, char **rest) {//só para arrays
     return ini;
 }
 
+/** 
+ * \brief Função que dado algo delimitado por "", devolve o conteúdo dentro das delimitações.   
+ * @param line A linha que será lida
+ * @param rest O resto da linha  
+ */
+char *getAspas(char * token, char **rest) {
+    char * ini = token+1;
+    for (token++; *token != '"'; token++) {
+        if (*token == '\0') *token = ' ';
+    }
+    if (*token != '\0') *rest = token+2;
+    else *rest = token;
+    *token = '\0';
+    //token = line+1;
+    token = ini;
+    return token;
+}
+
 STACK *parse(char *line, STACK *stack, DATA ll[]) {
     //char *delims = " \t\n";
     char *rest[strlen(line)+1];
@@ -480,22 +503,19 @@ STACK *parse(char *line, STACK *stack, DATA ll[]) {
     for ( token = get_token3(line, rest); token != NULL; token = get_token3(line,rest)) {
         //while ( strchr(delims,*line) != NULL && *line != '\0') line ++;
         if(*token =='"') {//por numa função getdelimited
-            char * ini = token+1;
-            for (token++; *token != '"'; token++) {
-                if (*token == '\0') *token = ' ';
-            }
-            if (*token != '\0') *rest = token+2;
-            else *rest = token;
-            *token = '\0';
-            //token = line+1;
-            token = ini;
+            //char * ini = token+1;
+            //for (token++; *token != '"'; token++) {
+            //    if (*token == '\0') *token = ' ';
+            //}
+            //if (*token != '\0') *rest = token+2;
+            //else *rest = token;
+            //*token = '\0';
+            ////token = line+1;
+            //token = ini;
+            char *ini = getAspas(token, rest);
             DATA z;
             {make_datas(z,STRING,ini);}
             push(stack,z);
-            
-            //printf("token: %s\n", token);
-            //printf("  ini: %s\n", ini );
-            //printf(" rest: %s\n", *rest);
         }
         else
         if(*token =='[') {
