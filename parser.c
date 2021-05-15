@@ -1,7 +1,9 @@
 /*
  @file parser.c
- @brief Ficheiro com as funções relativas às operações aritméticas e ao parser.
+ @brief Ficheiro com as funções relativas ao parser.
 */
+
+
 #define _GNU_SOURCE
 #include <string.h>
 #include <math.h>

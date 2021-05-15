@@ -1,3 +1,8 @@
+ /**
+ @file arit.c
+ @brief Ficheiro no qual se encontram as funções referentes a operações aritméticas.
+ */
+
 #define _GNU_SOURCE
 
 
