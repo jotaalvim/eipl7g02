@@ -59,7 +59,7 @@ typedef struct stack {
 /**
  * \brief É uma macro.
  */
-#define make_datas(var,TYPE,value)  { var.elems.TYPE =value;   var.type=TYPE; } 
+#define make_datas(var,TYPE,value)  { var.elems.TYPE=value;   var.type=TYPE; } 
 
  /**
  * \brief Função que atribui um número ao type de um dado DATA.

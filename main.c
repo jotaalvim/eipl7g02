@@ -7,6 +7,7 @@
 #include <string.h>
 #include "stack.h"
 
+#include "arit.h"
 #include "parser.h"
 
 #include <stdlib.h>

@@ -3,170 +3,171 @@
  @brief Ficheiro com as funções relativas às operações aritméticas e ao parser.
 */
 #define _GNU_SOURCE
-#include "parser.h"
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 
+#include "arit.h"
+#include "parser.h"
 
 /**
  * \brief Função que realiza uma determinada operação aritmética (determinada pelo caracter dado) aos dois elementos do topo da Stack.
  * @param s Stack
  * @param c Caracter que vai determinar a operação aritmética a realizar
  */
-void aritmetica (STACK *s, char *c) {//c é o operdor
-    DATA a, da, ia, z, b, db, ib; 
-    TYPE ta, tb;
-    a = top(s); // a ori
-    ta = a.type;
-    
-    trsd(s);      
-    da = top(s); // a double
-    trsi(s);      
-    ia = top(s); // a int
-    
-    z = pop(s); 
-      
-    b = top(s); // b ori
-    tb = b.type;
-     
-    trsd(s);      
-    db = top(s); // b double
-    trsi(s);      
-    ib = top(s); // b int
-    
-    z = pop(s); 
-    double daf = da.elems.DOUBLE, dbf = db.elems.DOUBLE,x2; 
-    int    iaf = ia.elems.LONG,   ibf = ib.elems.LONG, x ; 
-    char   *x3, *saf, *sbf; 
-    if (tb == ARRAY  || ta == ARRAY) {
-
-    }
-    if (tb == STRING || ta == STRING ){
-        switch(*c) {
-            case 'e':
-                switch (*(c+1)) {
-                    case '<':
-                        saf = a.elems.STRING;
-                        sbf = b.elems.STRING;
-                        x3 = strcmp(saf, sbf) > 0 ? sbf : saf;
-                        make_datas(z,STRING,x3); break;
-                    case '>':
-                        saf = a.elems.STRING;
-                        sbf = b.elems.STRING;
-                        x3 = strcmp(saf, sbf) < 0 ? sbf : saf;
-                        make_datas(z,STRING,x3); break;
-                    default : printf("sitio inesperado, '%c'",*c);break;
-                } break;
-            case '+':
-
-                // "ola" 'b'
-                if (tb == CHAR) {
-                    char *f;
-                    int t = asprintf(&f ,"%c%s", b.elems.CHAR, a.elems.STRING);
-                    t++;
-                    make_datas(z,STRING,f); 
-                }
-                else
-                if (ta == CHAR) {
-                    char *f;
-                    int t = asprintf(&f ,"%s%c", b.elems.STRING, a.elems.CHAR);
-                    t++;
-                    make_datas(z,STRING,f); 
-                }
-                else {
-                    char *f;
-                    int t = asprintf(&f ,"%s%s", b.elems.STRING, a.elems.STRING);
-                    t++;
-                    make_datas(z,STRING,f); 
-                } break;
-            case '*':
-                if (tb == LONG) {
-                    char *f = malloc (sizeof(char)* strlen(a.elems.STRING) * b.elems.LONG +1);
-                    f[0] = '\0';
-                    for ( int i = 0; b.elems.LONG > i ; i++) {
-                       strcat( f, a.elems.STRING);
-                    }
-                    //f [strlen(a.elems.STRING) * b.elems.LONG] = '\0';
-                    //printf("%s",f);
-                    make_datas(z,STRING,f); 
-                }
-                if (ta == LONG) {
-                    char *f = malloc (sizeof(char)* strlen(b.elems.STRING) * a.elems.LONG +1);
-                    for ( int i = 0; a.elems.LONG > i ; i++) {
-                       strcat(f, b.elems.STRING);
-                    }
-                    //f [strlen(b.elems.STRING) * a.elems.LONG] = '\0';
-                    //printf("%s",f);
-                    make_datas(z,STRING,f); 
-                } break;
-                break;
-        }
-    }
-    else
-    if (tb == DOUBLE || ta == DOUBLE ){ 
-        switch(*c) {
-            case '+': make_datas(z,DOUBLE,daf+dbf);break;
-            case '-': make_datas(z,DOUBLE,dbf-daf);break;
-            case '/': make_datas(z,DOUBLE,dbf/daf);break;
-            case '*': make_datas(z,DOUBLE,daf*dbf);break;
-            case '%': make_datas(z,LONG,ibf%iaf);break;
-            case '&': make_datas(z,LONG,iaf&ibf);break;
-            case '|': make_datas(z,LONG,iaf||ibf);break;
-            case '^': make_datas(z,LONG,ibf^iaf);break;
-            case '#': make_datas(z,DOUBLE,pow(dbf,daf));break;
-            case 'e':
-                switch (*(c+1)) {
-                    case '&':
-                        x2 = dbf ? daf : 0 ;
-                        make_datas(z,DOUBLE,x2); break;
-                    case '|':
-                        x2 = dbf ? dbf : daf ;
-                        make_datas(z,DOUBLE,x2); break;
-                    case '<':
-                        x2 = dbf < daf ? dbf : daf;
-                        make_datas(z,DOUBLE,x2); break;
-                    case '>':
-                        //printf("\n%f %f\n",dbf, daf); 
-                        x2 = (dbf > daf) ? dbf : daf;
-                        //printf("\n%f\n",x2); 
-                        make_datas(z,DOUBLE,x2); break;
-                    default : printf("sitio inesperado, '%c'",*c);break;
-                }break;
-            default : printf("sitio inesperado, '%c'",*c);break;
-        }
-    }
-    else 
-        switch (*c) {
-            case '+': make_datas(z,LONG,iaf+ibf);break;
-            case '-': make_datas(z,LONG,ibf-iaf);break;
-            case '/': make_datas(z,LONG,ibf/iaf);break;
-            case '*': make_datas(z,LONG,iaf*ibf);break;
-            case '%': make_datas(z,LONG,ibf%iaf);break;
-            case '&': make_datas(z,LONG,iaf&ibf);break;
-            case '|': make_datas(z,LONG,iaf||ibf);break;
-            case '^': make_datas(z,LONG,ibf^iaf);break;
-            case '#': make_datas(z,DOUBLE,pow(dbf,daf));break;
-            case 'e': 
-                switch (*(c+1)) {
-                    case '&': 
-                        x = ibf ? iaf : 0 ;
-                        make_datas(z,LONG,x); break;
-                    case '|':
-                        x = ibf ? ibf : iaf ;
-                        make_datas(z,LONG,x); break;
-                    case '<':
-                        x = ibf < iaf ? ibf : iaf ;
-                        make_datas(z,LONG,x); break;
-                    case '>':
-                        x = ibf > iaf ? ibf : iaf ;
-                        make_datas(z,LONG,x); break;
-                    default : printf("sitio inesperado, '%c'",*c);break; }break;
-            default : printf("sitio inesperado, '%c'",*c);break;
-    }
-    push(s,z);
-}
-
+//void aritmetica (STACK *s, char *c) {//c é o operdor
+//    DATA a, da, ia, z, b, db, ib; 
+//    TYPE ta, tb;
+//    a = top(s); // a ori
+//    ta = a.type;
+//    
+//    trsd(s);      
+//    da = top(s); // a double
+//    trsi(s);      
+//    ia = top(s); // a int
+//    
+//    z = pop(s); 
+//      
+//    b = top(s); // b ori
+//    tb = b.type;
+//     
+//    trsd(s);      
+//    db = top(s); // b double
+//    trsi(s);      
+//    ib = top(s); // b int
+//    
+//    z = pop(s); 
+//    double daf = da.elems.DOUBLE, dbf = db.elems.DOUBLE,x2; 
+//    int    iaf = ia.elems.LONG,   ibf = ib.elems.LONG, x ; 
+//    char   *x3, *saf, *sbf; 
+//    if (tb == ARRAY  || ta == ARRAY) {
+//
+//    }
+//    if (tb == STRING || ta == STRING ){
+//        switch(*c) {
+//            case 'e':
+//                switch (*(c+1)) {
+//                    case '<':
+//                        saf = a.elems.STRING;
+//                        sbf = b.elems.STRING;
+//                        x3 = strcmp(saf, sbf) > 0 ? sbf : saf;
+//                        make_datas(z,STRING,x3); break;
+//                    case '>':
+//                        saf = a.elems.STRING;
+//                        sbf = b.elems.STRING;
+//                        x3 = strcmp(saf, sbf) < 0 ? sbf : saf;
+//                        make_datas(z,STRING,x3); break;
+//                    default : printf("sitio inesperado, '%c'",*c);break;
+//                } break;
+//            case '+':
+//
+//                // "ola" 'b'
+//                if (tb == CHAR) {
+//                    char *f;
+//                    int t = asprintf(&f ,"%c%s", b.elems.CHAR, a.elems.STRING);
+//                    t++;
+//                    make_datas(z,STRING,f); 
+//                }
+//                else
+//                if (ta == CHAR) {
+//                    char *f;
+//                    int t = asprintf(&f ,"%s%c", b.elems.STRING, a.elems.CHAR);
+//                    t++;
+//                    make_datas(z,STRING,f); 
+//                }
+//                else {
+//                    char *f;
+//                    int t = asprintf(&f ,"%s%s", b.elems.STRING, a.elems.STRING);
+//                    t++;
+//                    make_datas(z,STRING,f); 
+//                } break;
+//            case '*':
+//                if (tb == LONG) {
+//                    char *f = malloc (sizeof(char)* strlen(a.elems.STRING) * b.elems.LONG +1);
+//                    f[0] = '\0';
+//                    for ( int i = 0; b.elems.LONG > i ; i++) {
+//                       strcat( f, a.elems.STRING);
+//                    }
+//                    //f [strlen(a.elems.STRING) * b.elems.LONG] = '\0';
+//                    //printf("%s",f);
+//                    make_datas(z,STRING,f); 
+//                }
+//                if (ta == LONG) {
+//                    char *f = malloc (sizeof(char)* strlen(b.elems.STRING) * a.elems.LONG +1);
+//                    for ( int i = 0; a.elems.LONG > i ; i++) {
+//                       strcat(f, b.elems.STRING);
+//                    }
+//                    //f [strlen(b.elems.STRING) * a.elems.LONG] = '\0';
+//                    //printf("%s",f);
+//                    make_datas(z,STRING,f); 
+//                } break;
+//                break;
+//        }
+//    }
+//    else
+//    if (tb == DOUBLE || ta == DOUBLE ){ 
+//        switch(*c) {
+//            case '+': make_datas(z,DOUBLE,daf+dbf);break;
+//            case '-': make_datas(z,DOUBLE,dbf-daf);break;
+//            case '/': make_datas(z,DOUBLE,dbf/daf);break;
+//            case '*': make_datas(z,DOUBLE,daf*dbf);break;
+//            case '%': make_datas(z,LONG,ibf%iaf);break;
+//            case '&': make_datas(z,LONG,iaf&ibf);break;
+//            case '|': make_datas(z,LONG,iaf||ibf);break;
+//            case '^': make_datas(z,LONG,ibf^iaf);break;
+//            case '#': make_datas(z,DOUBLE,pow(dbf,daf));break;
+//            case 'e':
+//                switch (*(c+1)) {
+//                    case '&':
+//                        x2 = dbf ? daf : 0 ;
+//                        make_datas(z,DOUBLE,x2); break;
+//                    case '|':
+//                        x2 = dbf ? dbf : daf ;
+//                        make_datas(z,DOUBLE,x2); break;
+//                    case '<':
+//                        x2 = dbf < daf ? dbf : daf;
+//                        make_datas(z,DOUBLE,x2); break;
+//                    case '>':
+//                        //printf("\n%f %f\n",dbf, daf); 
+//                        x2 = (dbf > daf) ? dbf : daf;
+//                        //printf("\n%f\n",x2); 
+//                        make_datas(z,DOUBLE,x2); break;
+//                    default : printf("sitio inesperado, '%c'",*c);break;
+//                }break;
+//            default : printf("sitio inesperado, '%c'",*c);break;
+//        }
+//    }
+//    else 
+//        switch (*c) {
+//            case '+': make_datas(z,LONG,iaf+ibf);break;
+//            case '-': make_datas(z,LONG,ibf-iaf);break;
+//            case '/': make_datas(z,LONG,ibf/iaf);break;
+//            case '*': make_datas(z,LONG,iaf*ibf);break;
+//            case '%': make_datas(z,LONG,ibf%iaf);break;
+//            case '&': make_datas(z,LONG,iaf&ibf);break;
+//            case '|': make_datas(z,LONG,iaf||ibf);break;
+//            case '^': make_datas(z,LONG,ibf^iaf);break;
+//            case '#': make_datas(z,DOUBLE,pow(dbf,daf));break;
+//            case 'e': 
+//                switch (*(c+1)) {
+//                    case '&': 
+//                        x = ibf ? iaf : 0 ;
+//                        make_datas(z,LONG,x); break;
+//                    case '|':
+//                        x = ibf ? ibf : iaf ;
+//                        make_datas(z,LONG,x); break;
+//                    case '<':
+//                        x = ibf < iaf ? ibf : iaf ;
+//                        make_datas(z,LONG,x); break;
+//                    case '>':
+//                        x = ibf > iaf ? ibf : iaf ;
+//                        make_datas(z,LONG,x); break;
+//                    default : printf("sitio inesperado, '%c'",*c);break; }break;
+//            default : printf("sitio inesperado, '%c'",*c);break;
+//    }
+//    push(s,z);
+//}
+//
 /**
  * \brief Função que decrementa 1 valor ao elemento do topo da Stack.
  * @param s Stack
@@ -369,8 +370,6 @@ void compara(STACK *s, char c) {
 
     trsd(s);      
     da = top(s); // a double
-    //trsi(s);      
-    //ia = top(s); // a int
     
     z = pop(s); 
       
@@ -401,19 +400,21 @@ void compara(STACK *s, char c) {
         }
     } 
     else
-    if (tb == STRING && ta == LONG) {
+    if (tb == STRING && ta == LONG) {//FIXME
+        char *aux;
         switch( c ) {
             case '=' : 
-                make_datas(z,CHAR,  b.elems.STRING [a.elems.LONG]  ); break;
+                make_datas(z,CHAR,  b.elems.STRING[a.elems.LONG]); break;
             case '<':
-                if (tb == LONG) {
-                    //printf("%s\n", a.elems.STRING);
-                    a.elems.STRING += b.elems.LONG-1;
-                    make_datas(z,STRING,a.elems.STRING);
-                } break;
+                strcpy(aux, b.elems.STRING); 
+                printf("%s\n", aux);
+                aux +=  a.elems.LONG;
+                //{make_datas(z,STRING,lbf)};
+                break;
             case '>':
-               break;
-
+                //a.elems.STRING += b.elems.LONG-1;
+                //make_datas(z,STRING, af);
+                break;
         }
     } 
     else {
@@ -496,66 +497,6 @@ void vir(STACK *s) {
     
     push(s,a);
 }
-
-/**
- * \brief      Função que divide uma dada string usando delimitadores, separando os números dos operadores.
- *             É comparado o token com todos os possiveis operadores aritméticos, sendo chamada a função correspondente ao operador dado.
- *
- * @param line A line que foi lida e à qual se irá aplicar o parse
- * @param s    Stack
- */
-//
-//void parse2(char *line, STACK *stack) {
-//    char *delims = " \t\n";
-//    DATA ll[26];
-//    initVetor(ll);
-//    for(char *token = strtok(line, delims); token != NULL; token = strtok(NULL, delims)) {
-//        char *sobra;
-//        int val_i = strtol(token, &sobra, 10);// "20" -> 20; "20mesa" -> 20 , sobra = "mesa" 
-//        int temp = 1;//
-//        if(strlen(sobra) == 0) {
-//            DATA z;
-//            make_datas(z,LONG,val_i);
-//            push(stack,z);
-//            temp = 0;
-//        }
-//        double val_d = strtod(token, &sobra);
-//        if(strlen(sobra) == 0 && temp){
-//            DATA k;
-//            make_datas(k, DOUBLE, val_d);
-//            push(stack,k);
-//        }
-//        else // "20 30 +"
-//        if (temp) {
-//            if (strchr("+-/*^%#&|e",*token))  aritmetica(stack,token); 
-//            else
-//            if (*token >= 'A' && *token <= 'Z') push(stack,ll[*token-'A']);
-//            else
-//            if (strchr("<>=",*token)) compara(stack,*token); 
-//            else
-//            switch (*token) {
-//                case '(' : parA(stack); break;
-//                case ')' : parF(stack); break;
-//                case '~' : not(stack);  break;
-//                case '@' : arr(stack);  break;
-//                case '\\': stop(stack); break;
-//                case ';' : pop(stack);  break;
-//                case '_' : und(stack);  break;
-//                case '$' : tpi(stack);  break;
-//                case 'l' : lei(stack);  break;
-//                case 'c' : trsc(stack); break;
-//                case 'i' : trsi(stack); break;
-//                case 'f' : trsd(stack); break;
-//                case ':' : guardavar(stack,*(token+1),ll); break;
-//				case '!' : nao(stack);  break;
-//                case '?' : ifthenelse(stack); break;
-//                case ',' : vir(stack); break;
-//                default : printf("sitio inesperado fim parse '%c'", *token);break;
-//            }
-//        }
-//    }
-//}
-
 
 /** FIXME
  * \brief Função que separa um token do resto da linha, devolvendo os dois.     
