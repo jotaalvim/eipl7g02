@@ -182,11 +182,14 @@ void parA(STACK *s) {
     if (tp == CHAR)   { make_datas(p,CHAR,p.elems.CHAR-1); }
     else
     if (tp == STRING) {
-
         char c = p.elems.STRING[0];
-        p.elems.STRING ++;
+        p.elems.STRING++;
         push(s,p);
         make_datas(p,CHAR,c);  
+    }
+    else
+    if (tp == ARRAY) {
+        
     }
     push(s,p);
 }
@@ -198,11 +201,9 @@ void parA(STACK *s) {
 void parF(STACK *s) {
     DATA p = pop(s);
     TYPE tp = p.type;
-    if (tp == LONG)   { make_datas(p,LONG,p.elems.LONG+1); }
-    else 
-    if (tp == DOUBLE) { make_datas(p,DOUBLE,p.elems.DOUBLE+1); }
-    else 
-    if (tp == CHAR)   { make_datas(p,CHAR,p.elems.CHAR+1); }
+         if (tp == LONG  ) { make_datas(p,LONG,p.elems.LONG+1); }
+    else if (tp == DOUBLE) { make_datas(p,DOUBLE,p.elems.DOUBLE+1); }
+    else if (tp == CHAR  ) { make_datas(p,CHAR,p.elems.CHAR+1); }
     else 
     if (tp == STRING) {
         char c = p.elems.STRING [ strlen(p.elems.STRING) -1];
@@ -210,8 +211,16 @@ void parF(STACK *s) {
         push(s,p);
         make_datas(p,CHAR,c);  
     }
-    push(s,p);
+    else
+    if (tp == ARRAY) {
+        DATA fim = pop(p.elems.ARRAY);
+        //p.elems.ARRAY->n_elems--;
+        push(s,p);
+        push(s,fim);
+        return;
     }
+    push(s,p);
+}
 
 /**
  * \brief Função bitwise que incrementa e troca o sinal do elemento no topo da stack.
@@ -401,20 +410,28 @@ void compara(STACK *s, char c) {
     } 
     else
     if (tb == STRING && ta == LONG) {//FIXME
-        char *aux;
+        char *aux = malloc(sizeof(char) * strlen(b.elems.STRING) +1);
+        int i = 0, c2 = 0;
         switch( c ) {
             case '=' : 
                 make_datas(z,CHAR,  b.elems.STRING[a.elems.LONG]); break;
             case '<':
-                strcpy(aux, b.elems.STRING); 
-                printf("%s\n", aux);
-                aux +=  a.elems.LONG;
-                //{make_datas(z,STRING,lbf)};
-                break;
+                while ( i < a.elems.LONG ) {
+                    aux [i] = b.elems.STRING[i];
+                    i++;
+                }
+                aux[i] = '\0';
+                make_datas(z,STRING, aux); break;
             case '>':
-                //a.elems.STRING += b.elems.LONG-1;
-                //make_datas(z,STRING, af);
-                break;
+                i = a.elems.LONG;
+                //printf("%d",i);
+                while ( b.elems.STRING[i] ) {
+                    aux [c2] = b.elems.STRING[i];
+                    i++;
+                    c2++;
+                }
+                aux[c2] = '\0';
+                make_datas(z,STRING, aux); break;
         }
     } 
     else {
@@ -492,13 +509,15 @@ void initVetor(DATA *ll) {
 void vir(STACK *s) {
     DATA a = pop(s);
     TYPE ta = a.type;
-    if (ta == ARRAY){} ; //FIXME 
+    if (ta == ARRAY){
+        make_datas(a,LONG, a.elems.ARRAY->n_elems );       
+    } //FIXME 
     if (ta == STRING) make_datas(a,LONG,strlen(a.elems.STRING));
-    
+
     push(s,a);
 }
 
-/** FIXME
+/**
  * \brief Função que separa um token do resto da linha, devolvendo os dois.     
  * @param line A linha quer será lida
  * @param rest O resto da linha após ser separada do token   
