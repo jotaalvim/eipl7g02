@@ -152,15 +152,20 @@ void tpi (STACK *s) {
     TYPE ta = a.type;
     DATA z;
     int n=s->n_elems;
-    if(ta == LONG ) {
-        z = s->stack[n-a.elems.LONG-1];
+    switch (ta) {
+        case LONG: z = s->stack[n-a.elems.LONG-1]; break;
+        case DOUBLE: z = s->stack[n-(int)a.elems.DOUBLE-1]; break;
+        case CHAR: z = s->stack[n-a.elems.CHAR-1]; break;
     }
-    else if (ta == DOUBLE ) {
-        z = s->stack[n-(int)a.elems.DOUBLE-1];
-    }
-    else if (ta == CHAR) {
-        z =s->stack[n - a.elems.CHAR-1];
-    }
+    //if(ta == LONG ) {
+    //    z = s->stack[n-a.elems.LONG-1];
+    //}
+    //else if (ta == DOUBLE ) {
+    //    z = s->stack[n-(int)a.elems.DOUBLE-1];
+    //}
+    //else if (ta == CHAR) {
+    //    z =s->stack[n - a.elems.CHAR-1];
+    //}
     push(s, z);
 }
 
@@ -187,14 +192,19 @@ void lei (STACK *s){
 void trsc (STACK*s){
     DATA a = pop(s);
     TYPE ta= a.type;
-    if (ta == LONG) {
-        make_datas(a,CHAR,(char)a.elems.LONG); }
-    else 
-    if (ta == DOUBLE) {
-        make_datas(a,CHAR,(char) a.elems.DOUBLE); }
-    else 
-    if (ta == CHAR) {
-        make_datas(a,CHAR,a.elems.CHAR); }
+    switch (ta) {
+        case LONG:   make_datas(a,CHAR,(char)a.elems.LONG); break;
+        case DOUBLE: make_datas(a,CHAR,(char)a.elems.DOUBLE); break;
+        case CHAR:   make_datas(a,CHAR,(char)a.elems.CHAR); break;
+    }
+    //if (ta == LONG) {
+    //    make_datas(a,CHAR,(char)a.elems.LONG); }
+    //else 
+    //if (ta == DOUBLE) {
+    //    make_datas(a,CHAR,(char) a.elems.DOUBLE); }
+    //else 
+    //if (ta == CHAR) {
+    //    make_datas(a,CHAR,a.elems.CHAR); }
     push(s,a);
 }
 
@@ -205,19 +215,27 @@ void trsc (STACK*s){
 void trsi (STACK*s){
     DATA a = pop(s);
     TYPE ta= a.type;
-    if (ta == LONG) {
-        make_datas(a,LONG,a.elems.LONG);
-        push(s,a);}
-    else if (ta == DOUBLE) {
-        make_datas(a,LONG,(int) a.elems.DOUBLE);
-        push(s,a);}
-    else if (ta == CHAR) {
-        make_datas(a,LONG,(int) a.elems.CHAR);
-        push(s,a); }
-    else if (ta == STRING) {
-        char *sobra;
-        make_datas(a,LONG, strtol(a.elems.STRING,&sobra,10));
-        push(s,a); }
+    char *sobra;
+    switch (ta) {
+        case LONG:   make_datas(a,LONG,a.elems.LONG); break;
+        case DOUBLE: make_datas(a,DOUBLE,(int) a.elems.DOUBLE); break;
+        case CHAR:   make_datas(a,DOUBLE,(int) a.elems.CHAR); break;
+        case STRING: make_datas(a,LONG, strtol(a.elems.STRING,&sobra,10)); break;
+    }
+    push(s,a);
+    //if (ta == LONG) {
+    //    make_datas(a,LONG,a.elems.LONG);
+    //    push(s,a);}
+    //else if (ta == DOUBLE) {
+    //    make_datas(a,LONG,(int) a.elems.DOUBLE);
+    //    push(s,a);}
+    //else if (ta == CHAR) {
+    //    make_datas(a,LONG,(int) a.elems.CHAR);
+    //    push(s,a); }
+    //else if (ta == STRING) {
+    //    char *sobra;
+    //    make_datas(a,LONG, strtol(a.elems.STRING,&sobra,10));
+    //    push(s,a); }
 }
 
 /**
