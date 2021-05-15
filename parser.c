@@ -11,187 +11,42 @@
 #include "parser.h"
 
 /**
- * \brief Função que realiza uma determinada operação aritmética (determinada pelo caracter dado) aos dois elementos do topo da Stack.
- * @param s Stack
- * @param c Caracter que vai determinar a operação aritmética a realizar
- */
-//void aritmetica (STACK *s, char *c) {//c é o operdor
-//    DATA a, da, ia, z, b, db, ib; 
-//    TYPE ta, tb;
-//    a = top(s); // a ori
-//    ta = a.type;
-//    
-//    trsd(s);      
-//    da = top(s); // a double
-//    trsi(s);      
-//    ia = top(s); // a int
-//    
-//    z = pop(s); 
-//      
-//    b = top(s); // b ori
-//    tb = b.type;
-//     
-//    trsd(s);      
-//    db = top(s); // b double
-//    trsi(s);      
-//    ib = top(s); // b int
-//    
-//    z = pop(s); 
-//    double daf = da.elems.DOUBLE, dbf = db.elems.DOUBLE,x2; 
-//    int    iaf = ia.elems.LONG,   ibf = ib.elems.LONG, x ; 
-//    char   *x3, *saf, *sbf; 
-//    if (tb == ARRAY  || ta == ARRAY) {
-//
-//    }
-//    if (tb == STRING || ta == STRING ){
-//        switch(*c) {
-//            case 'e':
-//                switch (*(c+1)) {
-//                    case '<':
-//                        saf = a.elems.STRING;
-//                        sbf = b.elems.STRING;
-//                        x3 = strcmp(saf, sbf) > 0 ? sbf : saf;
-//                        make_datas(z,STRING,x3); break;
-//                    case '>':
-//                        saf = a.elems.STRING;
-//                        sbf = b.elems.STRING;
-//                        x3 = strcmp(saf, sbf) < 0 ? sbf : saf;
-//                        make_datas(z,STRING,x3); break;
-//                    default : printf("sitio inesperado, '%c'",*c);break;
-//                } break;
-//            case '+':
-//
-//                // "ola" 'b'
-//                if (tb == CHAR) {
-//                    char *f;
-//                    int t = asprintf(&f ,"%c%s", b.elems.CHAR, a.elems.STRING);
-//                    t++;
-//                    make_datas(z,STRING,f); 
-//                }
-//                else
-//                if (ta == CHAR) {
-//                    char *f;
-//                    int t = asprintf(&f ,"%s%c", b.elems.STRING, a.elems.CHAR);
-//                    t++;
-//                    make_datas(z,STRING,f); 
-//                }
-//                else {
-//                    char *f;
-//                    int t = asprintf(&f ,"%s%s", b.elems.STRING, a.elems.STRING);
-//                    t++;
-//                    make_datas(z,STRING,f); 
-//                } break;
-//            case '*':
-//                if (tb == LONG) {
-//                    char *f = malloc (sizeof(char)* strlen(a.elems.STRING) * b.elems.LONG +1);
-//                    f[0] = '\0';
-//                    for ( int i = 0; b.elems.LONG > i ; i++) {
-//                       strcat( f, a.elems.STRING);
-//                    }
-//                    //f [strlen(a.elems.STRING) * b.elems.LONG] = '\0';
-//                    //printf("%s",f);
-//                    make_datas(z,STRING,f); 
-//                }
-//                if (ta == LONG) {
-//                    char *f = malloc (sizeof(char)* strlen(b.elems.STRING) * a.elems.LONG +1);
-//                    for ( int i = 0; a.elems.LONG > i ; i++) {
-//                       strcat(f, b.elems.STRING);
-//                    }
-//                    //f [strlen(b.elems.STRING) * a.elems.LONG] = '\0';
-//                    //printf("%s",f);
-//                    make_datas(z,STRING,f); 
-//                } break;
-//                break;
-//        }
-//    }
-//    else
-//    if (tb == DOUBLE || ta == DOUBLE ){ 
-//        switch(*c) {
-//            case '+': make_datas(z,DOUBLE,daf+dbf);break;
-//            case '-': make_datas(z,DOUBLE,dbf-daf);break;
-//            case '/': make_datas(z,DOUBLE,dbf/daf);break;
-//            case '*': make_datas(z,DOUBLE,daf*dbf);break;
-//            case '%': make_datas(z,LONG,ibf%iaf);break;
-//            case '&': make_datas(z,LONG,iaf&ibf);break;
-//            case '|': make_datas(z,LONG,iaf||ibf);break;
-//            case '^': make_datas(z,LONG,ibf^iaf);break;
-//            case '#': make_datas(z,DOUBLE,pow(dbf,daf));break;
-//            case 'e':
-//                switch (*(c+1)) {
-//                    case '&':
-//                        x2 = dbf ? daf : 0 ;
-//                        make_datas(z,DOUBLE,x2); break;
-//                    case '|':
-//                        x2 = dbf ? dbf : daf ;
-//                        make_datas(z,DOUBLE,x2); break;
-//                    case '<':
-//                        x2 = dbf < daf ? dbf : daf;
-//                        make_datas(z,DOUBLE,x2); break;
-//                    case '>':
-//                        //printf("\n%f %f\n",dbf, daf); 
-//                        x2 = (dbf > daf) ? dbf : daf;
-//                        //printf("\n%f\n",x2); 
-//                        make_datas(z,DOUBLE,x2); break;
-//                    default : printf("sitio inesperado, '%c'",*c);break;
-//                }break;
-//            default : printf("sitio inesperado, '%c'",*c);break;
-//        }
-//    }
-//    else 
-//        switch (*c) {
-//            case '+': make_datas(z,LONG,iaf+ibf);break;
-//            case '-': make_datas(z,LONG,ibf-iaf);break;
-//            case '/': make_datas(z,LONG,ibf/iaf);break;
-//            case '*': make_datas(z,LONG,iaf*ibf);break;
-//            case '%': make_datas(z,LONG,ibf%iaf);break;
-//            case '&': make_datas(z,LONG,iaf&ibf);break;
-//            case '|': make_datas(z,LONG,iaf||ibf);break;
-//            case '^': make_datas(z,LONG,ibf^iaf);break;
-//            case '#': make_datas(z,DOUBLE,pow(dbf,daf));break;
-//            case 'e': 
-//                switch (*(c+1)) {
-//                    case '&': 
-//                        x = ibf ? iaf : 0 ;
-//                        make_datas(z,LONG,x); break;
-//                    case '|':
-//                        x = ibf ? ibf : iaf ;
-//                        make_datas(z,LONG,x); break;
-//                    case '<':
-//                        x = ibf < iaf ? ibf : iaf ;
-//                        make_datas(z,LONG,x); break;
-//                    case '>':
-//                        x = ibf > iaf ? ibf : iaf ;
-//                        make_datas(z,LONG,x); break;
-//                    default : printf("sitio inesperado, '%c'",*c);break; }break;
-//            default : printf("sitio inesperado, '%c'",*c);break;
-//    }
-//    push(s,z);
-//}
-//
-/**
  * \brief Função que decrementa 1 valor ao elemento do topo da Stack.
  * @param s Stack
  */
 void parA(STACK *s) {
     DATA p = pop(s);
     TYPE tp = p.type;
-    if (tp == LONG)   { make_datas(p,LONG,p.elems.LONG-1); }
-    else 
-    if (tp == DOUBLE) { make_datas(p,DOUBLE,p.elems.DOUBLE-1); }
-    else 
-    if (tp == CHAR)   { make_datas(p,CHAR,p.elems.CHAR-1); }
-    else
-    if (tp == STRING) {
-        char c = p.elems.STRING[0];
-        p.elems.STRING++;
-        push(s,p);
-        make_datas(p,CHAR,c);  
-    }
-    else
-    if (tp == ARRAY) {
-        
+    char c;
+    switch (tp) {
+        case LONG:   make_datas(p,LONG  ,p.elems.LONG-1  ); break;
+        case DOUBLE: make_datas(p,DOUBLE,p.elems.DOUBLE-1); break;
+        case CHAR:   make_datas(p,CHAR  ,p.elems.CHAR-1  ); break;
+        case STRING: 
+            c = p.elems.STRING[0];
+            p.elems.STRING++;
+            push(s,p);
+            make_datas(p,CHAR,c);
+            break;
+        case ARRAY: break; //FIXME
     }
     push(s,p);
+    //if (tp == LONG)   { make_datas(p,LONG,p.elems.LONG-1); }
+    //else 
+    //if (tp == DOUBLE) { make_datas(p,DOUBLE,p.elems.DOUBLE-1); }
+    //else 
+    //if (tp == CHAR)   { make_datas(p,CHAR,p.elems.CHAR-1); }
+    //else
+    //if (tp == STRING) {
+    //    char c = p.elems.STRING[0];
+    //    p.elems.STRING++;
+    //    push(s,p);
+    //    make_datas(p,CHAR,c);  
+    //}
+    //else
+    //if (tp == ARRAY) {
+    //    
+    //}
 }
 
 /**
@@ -199,27 +54,45 @@ void parA(STACK *s) {
  * @param s Stack
  */
 void parF(STACK *s) {
-    DATA p = pop(s);
+    DATA p = pop(s),fim;
     TYPE tp = p.type;
-         if (tp == LONG  ) { make_datas(p,LONG,p.elems.LONG+1); }
-    else if (tp == DOUBLE) { make_datas(p,DOUBLE,p.elems.DOUBLE+1); }
-    else if (tp == CHAR  ) { make_datas(p,CHAR,p.elems.CHAR+1); }
-    else 
-    if (tp == STRING) {
-        char c = p.elems.STRING [ strlen(p.elems.STRING) -1];
-        p.elems.STRING [ strlen(p.elems.STRING) -1] = '\0';
-        push(s,p);
-        make_datas(p,CHAR,c);  
-    }
-    else
-    if (tp == ARRAY) {
-        DATA fim = pop(p.elems.ARRAY);
-        //p.elems.ARRAY->n_elems--;
-        push(s,p);
-        push(s,fim);
-        return;
+    char c;
+    switch (tp) {
+        case LONG:   make_datas(p,LONG  ,p.elems.LONG+1  ); break;
+        case DOUBLE: make_datas(p,DOUBLE,p.elems.DOUBLE+1); break;
+        case CHAR:   make_datas(p,CHAR  ,p.elems.CHAR+1  ); break;
+        case STRING:
+            c = p.elems.STRING [ strlen(p.elems.STRING) +1];
+            p.elems.STRING [ strlen(p.elems.STRING) -1] = '\0';
+            push(s,p);
+            make_datas(p,CHAR,c);break;
+        case ARRAY: //FIXME
+            fim = pop(p.elems.ARRAY);
+            p.elems.ARRAY->n_elems--;
+            push(s,p);
+            push(s,fim);
+            return;
     }
     push(s,p);
+    //     if (tp == LONG  ) { make_datas(p,LONG,p.elems.LONG+1); }
+    //else if (tp == DOUBLE) { make_datas(p,DOUBLE,p.elems.DOUBLE+1); }
+    //else if (tp == CHAR  ) { make_datas(p,CHAR,p.elems.CHAR+1); }
+    //else 
+    //if (tp == STRING) {
+    //    char c = p.elems.STRING [ strlen(p.elems.STRING) +1];
+    //    p.elems.STRING [ strlen(p.elems.STRING) -1] = '\0';
+    //    push(s,p);
+    //    make_datas(p,CHAR,c);  
+    //}
+    //else
+    //if (tp == ARRAY) {
+    //    DATA fim = pop(p.elems.ARRAY);
+    //    //p.elems.ARRAY->n_elems--;
+    //    push(s,p);
+    //    push(s,fim);
+    //    return;
+    //}
+    //push(s,p);
 }
 
 /**
@@ -354,14 +227,19 @@ void trsi (STACK*s){
 void trsd (STACK*s){
     DATA a = pop(s);
     TYPE ta= a.type;
-    if (ta == LONG) {
-        make_datas(a,DOUBLE,(double)a.elems.LONG); }
-    else if (ta == DOUBLE) {
-        make_datas(a,DOUBLE,a.elems.DOUBLE); }
-    else if (ta == CHAR) {
-        make_datas(a,DOUBLE,(double)a.elems.CHAR); }
-    else if (ta == STRING) {
-        make_datas(a,DOUBLE,atof(a.elems.STRING)); }
+    switch (ta){
+        case LONG:   make_datas(a,DOUBLE,(double)a.elems.LONG  ); break;
+        case DOUBLE: make_datas(a,DOUBLE,(double)a.elems.DOUBLE); break;
+        case CHAR:   make_datas(a,DOUBLE,(double)a.elems.CHAR  ); break;
+        case STRING: make_datas(a,DOUBLE,atof(a.elems.STRING)); break;
+        default: break;
+    }
+    //else if (ta == DOUBLE) {
+    //    make_datas(a,DOUBLE,a.elems.DOUBLE); }
+    //else if (ta == CHAR) {
+    //    make_datas(a,DOUBLE,(double)a.elems.CHAR); }
+    //else if (ta == STRING) {
+    //    make_datas(a,DOUBLE,atof(a.elems.STRING)); }
     push(s,a);
 }
 
