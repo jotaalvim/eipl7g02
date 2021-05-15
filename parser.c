@@ -12,6 +12,11 @@
 #include "arit.h"
 #include "parser.h"
 
+
+/**
+ * \brief Função que decrementa 1 valor ao elemento do topo da Stack. Caso seja um array/string o primeiro elemento é colocado no topo da Stack.
+ * @param s Stack
+ */
 void parA(STACK *s) {
     char c;
     DATA p = pop(s);
@@ -28,27 +33,12 @@ void parA(STACK *s) {
             break;
         case ARRAY: break; //FIXME
     }
-    //if (tp == LONG)   { make_datas(p,LONG,p.elems.LONG-1); }
-    //else 
-    //if (tp == DOUBLE) { make_datas(p,DOUBLE,p.elems.DOUBLE-1); }
-    //else 
-    //if (tp == CHAR)   { make_datas(p,CHAR,p.elems.CHAR-1); }
-    //else
-    //if (tp == STRING) {
-    //    char c = p.elems.STRING[0];
-    //    p.elems.STRING++;
-    //    push(s,p);
-    //    make_datas(p,CHAR,c);  
-    //}
-    //else
-    //if (tp == ARRAY) {
-    //    
-    //}
+
     push(s,p);
 }
 
 /**
- * \brief Função que incrementa 1 valor ao elemento do topo da Stack.
+ * \brief Função que incrementa 1 valor ao elemento do topo da Stack. Caso seja um array/string o último elemento é colocado no topo da Stack.
  * @param s Stack
  */
 void parF(STACK *s) {
@@ -71,29 +61,12 @@ void parF(STACK *s) {
             push(s,fim);
             return;
     }
-    //     if (tp == LONG  ) { make_datas(p,LONG,p.elems.LONG+1); }
-    //else if (tp == DOUBLE) { make_datas(p,DOUBLE,p.elems.DOUBLE+1); }
-    //else if (tp == CHAR  ) { make_datas(p,CHAR,p.elems.CHAR+1); }
-    //else 
-    //if (tp == STRING) {
-    //    char c = p.elems.STRING [ strlen(p.elems.STRING) -1];
-    //    p.elems.STRING [ strlen(p.elems.STRING) -1] = '\0';
-    //    push(s,p);
-    //    make_datas(p,CHAR,c);  
-    //}
-    //else
-    //if (tp == ARRAY) {
-    //    DATA fim = pop(p.elems.ARRAY);
-    //    //p.elems.ARRAY->n_elems--;
-    //    push(s,p);
-    //    push(s,fim);
-    //    return;
-    //}
+
     push(s,p);
 }
 
 /**
- * \brief Função bitwise que incrementa e troca o sinal do elemento no topo da stack.
+ * \brief Função bitwise que incrementa e troca o sinal do elemento no topo da stack. Caso seja um array/string todos os seus elementos são colocados na Stack.
  * @param s Stack
  */
 void not(STACK *s) {
@@ -155,15 +128,7 @@ void tpi (STACK *s) {
         case CHAR: z = s->stack[n-a.elems.CHAR-1]; break;
         default: break;
     }
-    //if(ta == LONG ) {
-    //    z = s->stack[n-a.elems.LONG-1];
-    //}
-    //else if (ta == DOUBLE ) {
-    //    z = s->stack[n-(int)a.elems.DOUBLE-1];
-    //}
-    //else if (ta == CHAR) {
-    //    z =s->stack[n - a.elems.CHAR-1];
-    //}
+
     push(s, z);
 }
 
@@ -196,14 +161,7 @@ void trsc (STACK*s){
         case CHAR:   make_datas(a,CHAR, a.elems.CHAR       ); break;
         default  : break;
     }
-    //if (ta == LONG) {
-    //    make_datas(a,CHAR,(char)a.elems.LONG); }
-    //else 
-    //if (ta == DOUBLE) {
-    //    make_datas(a,CHAR,(char) a.elems.DOUBLE); }
-    //else 
-    //if (ta == CHAR) {
-    //    make_datas(a,CHAR,a.elems.CHAR); }
+
     push(s,a);
 }
 
@@ -214,13 +172,7 @@ void trsc (STACK*s){
 void trsi (STACK*s){
     DATA a = pop(s);
     TYPE ta= a.type;
-    //switch (ta) {
-    //    case LONG:   make_datas(a,LONG,a.elems.LONG); break;
-    //    case DOUBLE: make_datas(a,DOUBLE,(int) a.elems.DOUBLE); break;
-    //    case CHAR:   make_datas(a,DOUBLE,(int) a.elems.CHAR); break;
-    //    case STRING: make_datas(a,LONG, strtol(a.elems.STRING,&sobra,10)); break;
-    //    default: break;
-    //}
+
     if (ta == LONG) {
         make_datas(a,LONG,a.elems.LONG);
         push(s,a);}
@@ -395,6 +347,10 @@ void initVetor(DATA *ll) {
     make_datas(ll[25],LONG,2); 
 }
 
+/**
+ * \brief Função que devolve o tamanho do elemento no topo da Stack.
+ * @param s Stack
+ */
 void vir(STACK *s) {
     DATA a = pop(s);
     TYPE ta = a.type;
@@ -403,10 +359,6 @@ void vir(STACK *s) {
         case STRING:make_datas(a,LONG,strlen(a.elems.STRING)); break;
         default: break;
     }
-    //if (ta == ARRAY){
-    //    make_datas(a,LONG, a.elems.ARRAY->n_elems );       
-    //} //FIXME 
-    //if (ta == STRING) make_datas(a,LONG,strlen(a.elems.STRING));
 
     push(s,a);
 }
@@ -434,30 +386,6 @@ char *get_token3(char *line, char **rest) { //**rest é um apontador para uma st
     //line = token;
     return token;
 }
-
-
-//char *get_token2(char *line, char **rest) { //**rest é um apontador para uma string
-//    char *delims = " \t\n\0";
-//    char *ini = line;
-//    if (!*line) return NULL;//*line == '\0'
-//    while ( !strchr(delims,*line) )  line ++; // strchr(delims,*line) == NULL
-//    //printf("%d\n",*line);
-//    *rest = (*line == '\0') ? NULL : line+1;
-//    *line = '\0';
-//    //if (*line == '\0')  *rest = NULL;
-//    //else  *rest = line +1;
-//    return ini;
-//}
-//char *get_token(char **rest) { //**rest é um apontador para uma string
-//    char *line = *rest;
-//    char *delims = " \t\n\0";
-//    char *ini = line;
-//    if (!*line) return NULL;
-//    while ( strchr(delims,*line) == NULL line ++;
-//    *rest = (*line == '\0') ? NULL : line+1;
-//    *line = '\0';
-//    return ini;
-//}
 
 /** 
  * \brief Função que dado algo delimitado por [], devolve o conteúdo dentro das delimitações.   
@@ -505,15 +433,7 @@ STACK *parse(char *line, STACK *stack, DATA ll[]) {
     for ( token = get_token3(line, rest); token != NULL; token = get_token3(line,rest)) {
         //while ( strchr(delims,*line) != NULL && *line != '\0') line ++;
         if(*token =='"') {//por numa função getdelimited
-            //char * ini = token+1;
-            //for (token++; *token != '"'; token++) {
-            //    if (*token == '\0') *token = ' ';
-            //}
-            //if (*token != '\0') *rest = token+2;
-            //else *rest = token;
-            //*token = '\0';
-            ////token = line+1;
-            //token = ini;
+            
             char *ini = getAspas(token, rest);
             DATA z;
             {make_datas(z,STRING,ini);}

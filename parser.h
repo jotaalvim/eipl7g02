@@ -15,19 +15,19 @@
 
 
 /**
- * \brief   Função que decrementa 1 valor ao elemento do topo da Stack.
+ * \brief Função que incrementa 1 valor ao elemento do topo da Stack. Caso seja um array/string o último elemento é colocado no topo da Stack.
  * @param s Stack
  */
 void parA(STACK *s);
 
 /**
- * \brief   Função que incrementa 1 valor ao elemento do topo da Stack.
+ * \brief Função que incrementa 1 valor ao elemento do topo da Stack. Caso seja um array/string o último elemento é colocado no topo da Stack.
  * @param s Stack
  */
 void parF(STACK *s);
 
 /**
- * \brief   Operador bitwise onde cada bit é comparado que retorna o valor representado em Complemento2.
+ * \brief Função bitwise que incrementa e troca o sinal do elemento no topo da stack. Caso seja um array/string todos os seus elementos são colocados na Stack.
  * @param s Stack
  */
 void not (STACK *s);
